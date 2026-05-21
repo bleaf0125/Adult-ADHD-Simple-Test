@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASD 特徵檢核表</title>
+
+<style>
+body{
+    font-family:"Microsoft JhengHei",sans-serif;
+    background:#f4f6f9;
+    margin:0;
+    padding:20px;
+    color:#222;
+    line-height:1.7;
+}
+.container{
+    max-width:1000px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+h1{text-align:center;}
+.note{
+    background:#fff7d6;
+    border-left:6px solid #e0b400;
+    padding:16px;
+    border-radius:10px;
+    margin:20px 0;
+}
+.term-note{
+    background:#eaf3ff;
+    border-left:6px solid #2c6bed;
+    padding:16px;
+    border-radius:10px;
+    margin:20px 0;
+}
+h2{
+    margin-top:40px;
+    border-bottom:2px solid #ddd;
+    padding-bottom:8px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+    margin-bottom:30px;
+}
+th,td{
+    border:1px solid #ddd;
+    padding:12px;
+    vertical-align:top;
+}
+th{background:#f0f0f0;}
+tr:nth-child(even){background:#fafafa;}
+.question{width:55%;}
+.score{text-align:center;width:9%;}
+button{
+    background:#2c6bed;
+    color:white;
+    border:none;
+    padding:14px 24px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+}
+.result-box{
+    background:#eef7ff;
+    padding:20px;
+    border-radius:12px;
+    margin-top:20px;
+}
+.footer{
+    margin-top:40px;
+    font-size:14px;
+    color:#666;
+}
+.back{
+    display:inline-block;
+    margin-top:20px;
+    color:#2c6bed;
+    text-decoration:none;
+}
+@media(max-width:768px){
+    table{font-size:14px;}
+    .container{padding:20px;}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>ASD 特徵檢核表</h1>
+
+<div class="note">
+<b>注意：</b><br>
+本檢核表不是正式醫療診斷，而是依據 DSM-5 與 ICD-11 對自閉症類群障礙症核心特徵所整理的教育用途檢核工具。<br>
+若特徵長期影響生活、人際、學習或工作功能，建議尋求精神科醫師、臨床心理師或相關專業人員進一步評估。
+</div>
+
+<div class="term-note">
+<b>專業用語提醒：</b><br>
+依據 DSM-5 以及 ICD-11 內容指示，本網站不會顯示亞斯伯格症，或高／低功能自閉症等非專業名詞。
+</div>
+
+<p>請依照長期狀況評分：</p>
+<ul>
+<li>0 分＝幾乎沒有</li>
+<li>1 分＝偶爾</li>
+<li>2 分＝經常</li>
+<li>3 分＝非常常</li>
+</ul>
+
+<h2>一、社交溝通與互動特徵</h2>
+
+<table>
+<tr>
+<th class="question">題目</th>
+<th class="score">0</th>
+<th class="score">1</th>
+<th class="score">2</th>
+<th class="score">3</th>
+</tr>
+<tbody id="section1"></tbody>
+</table>
+
+<h2>二、重複行為、固定模式與興趣特徵</h2>
+
+<table>
+<tr>
+<th class="question">題目</th>
+<th class="score">0</th>
+<th class="score">1</th>
+<th class="score">2</th>
+<th class="score">3</th>
+</tr>
+<tbody id="section2"></tbody>
+</table>
+
+<h2>三、感覺反應與生活適應特徵</h2>
+
+<table>
+<tr>
+<th class="question">題目</th>
+<th class="score">0</th>
+<th class="score">1</th>
+<th class="score">2</th>
+<th class="score">3</th>
+</tr>
+<tbody id="section3"></tbody>
+</table>
+
+<button onclick="calculateScore()">計算結果</button>
+
+<div class="result-box" id="result">尚未計算。</div>
+
+<a class="back" href="index.html">← 回到主頁</a>
+
+<div class="footer">
+<b>提醒：</b><br>
+ASD 的表現會因年齡、性別、生活經驗、支持程度與 masking 狀態而有所不同。<br>
+本檢核表只適合初步理解特徵，不適合作為診斷依據。
+</div>
+
+</div>
+
+<script>
+const questions1 = [
+"在日常對話中，常不知道如何自然地接話或延續話題",
+"難以判斷他人的表情、語氣、暗示或潛台詞",
+"在人際互動中，常被說反應太直接、太跳、太冷或不合時宜",
+"對社交場合感到疲憊，需要大量時間恢復",
+"不太知道如何建立、維持或調整關係距離",
+"團體互動時，容易不知道自己該站在哪個位置或扮演什麼角色",
+"比起即興互動，更偏好有明確規則或固定流程的交流"
+];
+
+const questions2 = [
+"對某些主題、作品、人物、系統或興趣有長期而強烈的投入",
+"生活中若計畫被打亂，容易明顯焦慮、煩躁或失控",
+"偏好固定路線、固定做法、固定物品或固定順序",
+"會反覆思考同一件事，難以停止或切換",
+"對某些細節、分類、規則或模式特別敏感",
+"在壓力下可能出現重複動作、重複語句或固定安撫行為",
+"很難快速接受突如其來的改變"
+];
+
+const questions3 = [
+"對聲音、光線、氣味、觸感、衣物材質或食物口感特別敏感",
+"在吵雜、混亂或人多的環境中容易過載",
+"需要靠固定習慣或固定空間來維持安全感",
+"長時間社交後，會出現明顯疲憊、關機或情緒耗竭",
+"從小到大常覺得自己和多數人的感受方式不太一樣",
+"為了融入他人，常刻意模仿、壓抑或演出合群反應",
+"明明能完成事情，但過程中需要消耗大量心理能量"
+];
+
+function createRows(list, startId, targetId){
+    const target = document.getElementById(targetId);
+    let html = "";
+    list.forEach((q,index)=>{
+        const number = startId + index;
+        html += "<tr>";
+        html += `<td>${number}. ${q}</td>`;
+        for(let i=0;i<=3;i++){
+            html += `<td style="text-align:center;">
+                <input type="radio" name="q${number}" value="${i}">
+            </td>`;
+        }
+        html += "</tr>";
+    });
+    target.innerHTML = html;
+}
+
+createRows(questions1,1,"section1");
+createRows(questions2,8,"section2");
+createRows(questions3,15,"section3");
+
+function calculateScore(){
+    let total = 0;
+    let answered = 0;
+
+    for(let i=1;i<=21;i++){
+        const radios = document.getElementsByName("q"+i);
+        for(let r of radios){
+            if(r.checked){
+                total += parseInt(r.value);
+                answered++;
+            }
+        }
+    }
+
+    if(answered < 21){
+        document.getElementById("result").innerHTML = `
+            <h3>尚未完成</h3>
+            <p>目前已填寫 ${answered} / 21 題，請完成所有題目後再計算。</p>
+        `;
+        return;
+    }
+
+    let resultText = "";
+
+    if(total <= 15){
+        resultText = "目前檢核結果顯示，ASD 相關特徵不明顯。";
+    }else if(total <= 30){
+        resultText = "檢核結果顯示有部分 ASD 相關特徵，可進一步觀察其是否長期影響生活功能。";
+    }else if(total <= 45){
+        resultText = "檢核結果顯示 ASD 相關特徵較明顯，若在人際、學習、工作或生活適應上長期受影響，建議尋求專業評估。";
+    }else{
+        resultText = "檢核結果顯示 ASD 相關特徵相當明顯，建議進一步尋求專業人員進行完整評估。";
+    }
+
+    document.getElementById("result").innerHTML = `
+        <h3>檢核結果</h3>
+        <p><b>總分：</b>${total} 分</p>
+        <p>${resultText}</p>
+    `;
+}
+</script>
+
+</body>
+</html>
