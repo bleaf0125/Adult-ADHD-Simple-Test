@@ -1,727 +1,618 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Holland 職業性向測驗</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<title>Holland 職業性向測驗 · 河馬的小工具箱</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
-  :root {
-    --R: #E8521A;
-    --I: #2563EB;
-    --A: #9333EA;
-    --S: #16A34A;
-    --E: #CA8A04;
-    --C: #0891B2;
-    --bg: #FAFAF7;
-    --surface: #FFFFFF;
-    --text: #1C1917;
-    --text2: #57534E;
-    --text3: #A8A29E;
-    --border: #E7E5E4;
-    --radius: 12px;
-  }
+:root{
+  --blue:#2c6bed;
+  --blue-dark:#1d4fb8;
+  --R:#E8521A; --I:#2563EB; --A:#9333EA;
+  --S:#16A34A; --E:#CA8A04; --C:#0891B2;
+  --bg:#f4f6f9;
+  --surface:#fff;
+  --text:#222;
+  --text2:#555;
+  --text3:#888;
+  --border:#e5e7eb;
+  --radius:14px;
+}
 
-  body {
-    font-family: 'Noto Sans TC', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
+body{
+  font-family:"Microsoft JhengHei",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
 
-  /* ── COVER ── */
-  #cover {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 1.5rem;
-    text-align: center;
-    background: #111;
-    color: #fff;
-    position: relative;
-    overflow: hidden;
-  }
-  #cover::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 110%, #1e3a5f 0%, transparent 70%),
-                radial-gradient(ellipse 60% 50% at 20% -10%, #3b1d5e 0%, transparent 60%);
-  }
-  .cover-hex {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%,-50%);
-    width: min(600px, 90vw);
-    opacity: 0.07;
-  }
-  .cover-content { position: relative; z-index: 1; max-width: 580px; }
-  .cover-eyebrow {
-    font-size: 0.75rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #94A3B8;
-    margin-bottom: 1.5rem;
-  }
-  .cover-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    font-weight: 700;
-    line-height: 1.15;
-    margin-bottom: 1rem;
-  }
-  .cover-title span { color: #60A5FA; }
-  .cover-desc {
-    font-size: 1rem;
-    color: #CBD5E1;
-    line-height: 1.8;
-    margin-bottom: 2.5rem;
-  }
-  .btn-start {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #fff;
-    color: #111;
-    font-family: 'Noto Sans TC', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 0.875rem 2.5rem;
-    border-radius: 100px;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-  .btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-  .cover-types {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 3rem;
-  }
-  .cover-badge {
-    font-size: 0.72rem;
-    font-weight: 500;
-    padding: 0.3rem 0.85rem;
-    border-radius: 100px;
-    border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.65);
-  }
+/* ── HEADER ── */
+.header{
+  background:linear-gradient(135deg,#2c6bed,#5f8fff);
+  color:#fff;
+  padding:56px 20px 44px;
+  text-align:center;
+}
+.header h1{font-size:36px;font-weight:bold;margin-bottom:10px;}
+.header p{font-size:16px;opacity:0.88;line-height:1.7;}
+.header-badges{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px;
+}
+.header-badge{
+  font-size:12px;padding:4px 14px;border-radius:100px;
+  border:1px solid rgba(255,255,255,0.35);color:rgba(255,255,255,0.8);
+}
 
-  /* ── QUIZ ── */
-  #quiz { display: none; min-height: 100vh; padding: 2rem 1rem 4rem; }
-  .quiz-inner { max-width: 680px; margin: 0 auto; }
+/* ── CONTAINER ── */
+.container{max-width:780px;margin:0 auto;padding:36px 20px 60px;}
 
-  .progress-bar-wrap {
-    height: 4px;
-    background: var(--border);
-    border-radius: 4px;
-    margin-bottom: 2.5rem;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #2563EB, #9333EA);
-    border-radius: 4px;
-    transition: width 0.4s ease;
-  }
+/* ── NOTE ── */
+.note{
+  background:#fff7d8;border-left:5px solid #f0c000;
+  padding:16px 18px;border-radius:12px;margin-bottom:36px;
+  font-size:14px;line-height:1.8;color:#555;
+}
 
-  .question-group {
-    display: none;
-    animation: fadeUp 0.35s ease both;
-  }
-  .question-group.active { display: block; }
+/* ── PROGRESS ── */
+.progress-wrap{
+  background:var(--border);border-radius:4px;height:5px;
+  margin-bottom:8px;overflow:hidden;
+}
+.progress-fill{
+  height:100%;background:linear-gradient(90deg,#2c6bed,#9333EA);
+  border-radius:4px;transition:width 0.4s ease;width:0%;
+}
+.progress-label{
+  font-size:13px;color:var(--text3);text-align:right;margin-bottom:28px;
+}
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+/* ── GROUP ── */
+.q-group{display:none;}
+.q-group.active{display:block;animation:fadeUp 0.3s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 
-  .group-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.75rem;
-  }
-  .group-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .group-label {
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text2);
-    font-weight: 500;
-  }
+.group-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:20px;
+}
+.group-pip{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.group-title{font-size:13px;letter-spacing:0.08em;color:var(--text2);font-weight:bold;}
 
-  .q-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 0.75rem;
-    cursor: pointer;
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    transition: border-color 0.15s, background 0.15s;
-    user-select: none;
-  }
-  .q-card:hover { border-color: #A8A29E; }
-  .q-card.selected { border-color: var(--accent); background: var(--accent-bg); }
+/* ── QUESTION CARD ── */
+.q-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:14px;
+}
+.q-text{font-size:15px;line-height:1.65;margin-bottom:16px;color:var(--text);}
 
-  .q-check {
-    width: 22px; height: 22px; flex-shrink: 0;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    margin-top: 1px;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-  }
-  .q-card.selected .q-check {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-  .q-check svg { display: none; }
-  .q-card.selected .q-check svg { display: block; }
-  .q-text { font-size: 0.95rem; line-height: 1.6; color: var(--text); }
+/* ── SCALE ── */
+.scale-row{
+  display:flex;align-items:center;gap:0;
+  justify-content:space-between;
+}
+.scale-labels{
+  display:flex;justify-content:space-between;
+  font-size:11px;color:var(--text3);margin-top:8px;
+}
+.scale-btn{
+  flex:1;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  cursor:pointer;background:none;border:none;padding:6px 4px;
+  border-radius:10px;transition:background 0.15s;
+}
+.scale-btn:hover .scale-circle{border-color:var(--accent,#2c6bed);}
+.scale-btn.selected .scale-circle{
+  background:var(--accent,#2c6bed);
+  border-color:var(--accent,#2c6bed);
+}
+.scale-btn.selected .scale-num{color:var(--accent,#2c6bed);font-weight:bold;}
+.scale-circle{
+  width:36px;height:36px;border-radius:50%;
+  border:2px solid var(--border);
+  transition:all 0.15s;
+  background:var(--bg);
+}
+.scale-num{font-size:13px;color:var(--text3);}
 
-  .quiz-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  .btn-nav {
-    font-family: 'Noto Sans TC', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    padding: 0.7rem 1.75rem;
-    border-radius: 100px;
-    border: 1.5px solid var(--border);
-    cursor: pointer;
-    background: transparent;
-    color: var(--text);
-    transition: all 0.15s;
-  }
-  .btn-nav:hover { border-color: #78716C; }
-  .btn-nav.primary {
-    background: var(--text);
-    color: #fff;
-    border-color: var(--text);
-  }
-  .btn-nav.primary:hover { background: #292524; }
-  .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-  .page-count { font-size: 0.85rem; color: var(--text3); }
+/* ── NAV ── */
+.quiz-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:28px;
+}
+.btn-nav{
+  font-family:"Microsoft JhengHei",sans-serif;
+  font-size:14px;font-weight:bold;
+  padding:10px 24px;border-radius:10px;
+  border:2px solid var(--border);
+  cursor:pointer;background:transparent;color:var(--text);
+  transition:all 0.15s;
+}
+.btn-nav:hover{border-color:#aaa;}
+.btn-nav.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.btn-nav.primary:hover{background:var(--blue-dark);border-color:var(--blue-dark);}
+.btn-nav:disabled{opacity:0.3;cursor:not-allowed;}
 
-  /* ── RESULT ── */
-  #result { display: none; padding: 2rem 1rem 4rem; }
-  .result-inner { max-width: 760px; margin: 0 auto; }
+/* ── RESULT ── */
+#result{display:none;padding:36px 20px 60px;}
+.result-inner{max-width:780px;margin:0 auto;}
 
-  .result-hero {
-    background: #111;
-    color: #fff;
-    border-radius: 20px;
-    padding: 3rem 2.5rem;
-    margin-bottom: 2rem;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-  }
-  .result-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 70% 60% at 50% 120%, var(--hero-color, #1e3a5f) 0%, transparent 70%);
-  }
-  .result-hero > * { position: relative; }
-  .result-eyebrow { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: #94A3B8; margin-bottom: 0.75rem; }
-  .result-type-code {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-  .result-type-name {
-    font-size: 1.1rem;
-    color: #CBD5E1;
-    margin-bottom: 1.5rem;
-  }
-  .result-summary {
-    font-size: 0.95rem;
-    color: #94A3B8;
-    line-height: 1.8;
-    max-width: 480px;
-    margin: 0 auto;
-  }
+.result-hero{
+  background:linear-gradient(135deg,#1a1a2e,#16213e);
+  color:#fff;border-radius:20px;padding:3rem 2rem;
+  text-align:center;margin-bottom:28px;position:relative;overflow:hidden;
+}
+.result-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 120%,var(--hero-glow,#1e3a5f) 0%,transparent 70%);
+}
+.result-hero>*{position:relative;}
+.result-eyebrow{font-size:12px;letter-spacing:0.15em;color:#94A3B8;margin-bottom:10px;}
+.result-code{
+  font-size:clamp(3rem,10vw,5.5rem);font-weight:900;
+  letter-spacing:0.15em;line-height:1;margin-bottom:8px;
+}
+.result-names{font-size:15px;color:#CBD5E1;margin-bottom:18px;line-height:1.8;}
+.result-desc{
+  font-size:14px;color:#94A3B8;line-height:1.9;
+  max-width:500px;margin:0 auto;
+}
 
-  .hexagon-chart {
-    display: flex;
-    justify-content: center;
-    margin: 2rem 0;
-  }
+/* ── SCORE BARS ── */
+.scores-section{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;margin-bottom:20px;
+}
+.scores-section h3{
+  font-size:12px;letter-spacing:0.1em;color:var(--text2);
+  margin-bottom:18px;font-weight:bold;
+}
+.score-row{
+  display:flex;align-items:center;gap:12px;margin-bottom:14px;
+}
+.score-row:last-child{margin-bottom:0;}
+.score-type-label{
+  width:72px;font-size:13px;font-weight:bold;flex-shrink:0;
+}
+.score-bar-bg{
+  flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;
+}
+.score-bar-fill{
+  height:100%;border-radius:4px;
+  transition:width 0.8s cubic-bezier(.4,0,.2,1);
+}
+.score-val{width:36px;text-align:right;font-size:13px;color:var(--text2);flex-shrink:0;}
 
-  .scores-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-  .score-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .score-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .score-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-  }
-  .score-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .score-num { font-size: 1.25rem; font-weight: 700; }
-  .score-bar-bg { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
-  .score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s cubic-bezier(.4,0,.2,1); }
-  .score-sub { font-size: 0.75rem; color: var(--text3); }
+/* ── THREE TYPE CARDS ── */
+.three-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;margin-bottom:20px;
+}
+.type-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;
+}
+.type-card-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:14px;
+}
+.type-badge{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:900;color:#fff;flex-shrink:0;
+}
+.type-card-name{font-size:14px;font-weight:bold;color:var(--text);}
+.type-card-sub{font-size:12px;color:var(--text3);}
+.type-card p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;}
+.career-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.career-chip{
+  font-size:12px;padding:3px 10px;border-radius:100px;
+  background:var(--bg);border:1px solid var(--border);color:var(--text2);
+}
 
-  .career-section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.75rem;
-    margin-bottom: 1.5rem;
-  }
-  .career-section h3 {
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text2);
-    margin-bottom: 1.25rem;
-    font-weight: 500;
-  }
-  .career-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  .career-tag {
-    font-size: 0.85rem;
-    padding: 0.35rem 0.9rem;
-    border-radius: 100px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text2);
-  }
+/* ── TRAITS SECTION ── */
+.traits-section{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;margin-bottom:20px;
+}
+.traits-section h3{
+  font-size:12px;letter-spacing:0.1em;color:var(--text2);
+  margin-bottom:16px;font-weight:bold;
+}
+.trait-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.trait-list li{
+  font-size:14px;color:var(--text2);
+  padding-left:18px;position:relative;line-height:1.6;
+}
+.trait-list li::before{
+  content:'';position:absolute;left:0;top:0.55em;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--top-color,#2c6bed);
+}
 
-  .trait-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-  .trait-list li {
-    font-size: 0.9rem;
-    color: var(--text2);
-    padding-left: 1.25rem;
-    position: relative;
-    line-height: 1.6;
-  }
-  .trait-list li::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0.5em;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent-color, #888);
-  }
+/* ── BACK / RESTART ── */
+.result-footer{display:flex;gap:12px;justify-content:center;margin-top:28px;}
+.btn-back{
+  font-family:"Microsoft JhengHei",sans-serif;
+  font-size:14px;padding:10px 22px;border-radius:10px;
+  border:2px solid var(--border);background:transparent;
+  color:var(--text2);cursor:pointer;transition:all 0.15s;
+}
+.btn-back:hover{border-color:#aaa;color:var(--text);}
+.btn-back.accent{background:var(--blue);color:#fff;border-color:var(--blue);}
+.btn-back.accent:hover{background:var(--blue-dark);}
 
-  .btn-restart {
-    display: block;
-    width: fit-content;
-    margin: 2rem auto 0;
-    font-family: 'Noto Sans TC', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    padding: 0.75rem 2rem;
-    border-radius: 100px;
-    border: 1.5px solid var(--border);
-    background: transparent;
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-restart:hover { border-color: #78716C; color: var(--text); }
+.footer{text-align:center;padding:30px 20px;color:#888;font-size:13px;}
 
-  /* SVG hex chart */
-  .hex-svg { overflow: visible; }
+/* hex SVG */
+.hex-wrap{display:flex;justify-content:center;margin:4px 0 24px;}
 </style>
 </head>
 <body>
 
-<!-- ═══ COVER ═══ -->
-<section id="cover">
-  <svg class="cover-hex" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="200,20 370,110 370,290 200,380 30,290 30,110" stroke="white" stroke-width="1.5"/>
-    <polygon points="200,60 340,135 340,265 200,340 60,265 60,135" stroke="white" stroke-width="0.8"/>
-  </svg>
-  <div class="cover-content">
-    <p class="cover-eyebrow">Holland RIASEC · 職業性向</p>
-    <h1 class="cover-title">探索你的<br><span>職業方向</span></h1>
-    <p class="cover-desc">
-      根據 John Holland 的職業人格理論，<br>
-      回答 36 道題目，找出最適合你的職業類型與發展方向。
-    </p>
-    <button class="btn-start" onclick="startQuiz()">
-      開始測驗
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-    <div class="cover-types">
-      <span class="cover-badge">R 實用型</span>
-      <span class="cover-badge">I 研究型</span>
-      <span class="cover-badge">A 藝術型</span>
-      <span class="cover-badge">S 社會型</span>
-      <span class="cover-badge">E 企業型</span>
-      <span class="cover-badge">C 事務型</span>
-    </div>
+<div class="header">
+  <h1>Holland 職業性向測驗</h1>
+  <p>每題以 1–5 分評估符合程度，找出你的三碼職涯類型</p>
+  <div class="header-badges">
+    <span class="header-badge">R 實用型</span>
+    <span class="header-badge">I 研究型</span>
+    <span class="header-badge">A 藝術型</span>
+    <span class="header-badge">S 社會型</span>
+    <span class="header-badge">E 企業型</span>
+    <span class="header-badge">C 事務型</span>
   </div>
-</section>
+</div>
 
 <!-- ═══ QUIZ ═══ -->
-<section id="quiz">
-  <div class="quiz-inner">
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
-    </div>
-    <div id="groups-container"></div>
-    <div class="quiz-nav">
-      <button class="btn-nav" id="btn-prev" onclick="prevGroup()">← 上一組</button>
-      <span class="page-count" id="page-count"></span>
-      <button class="btn-nav primary" id="btn-next" onclick="nextGroup()">下一組 →</button>
-    </div>
+<div id="quiz">
+<div class="container">
+  <div class="note">
+    <b>說明：</b><br>
+    請針對每一道描述，依照「符合自己的程度」選擇分數：<br>
+    <b>1</b> = 完全不像我　<b>2</b> = 有點不像　<b>3</b> = 普通／不確定　<b>4</b> = 有點像我　<b>5</b> = 非常像我
   </div>
-</section>
+
+  <div class="progress-wrap"><div class="progress-fill" id="prog-fill"></div></div>
+  <div class="progress-label" id="prog-label"></div>
+
+  <div id="groups-wrap"></div>
+
+  <div class="quiz-nav">
+    <button class="btn-nav" id="btn-prev" onclick="prevG()">← 上一組</button>
+    <span id="page-info" style="font-size:14px;color:#888;"></span>
+    <button class="btn-nav primary" id="btn-next" onclick="nextG()">下一組 →</button>
+  </div>
+</div>
+</div>
 
 <!-- ═══ RESULT ═══ -->
-<section id="result">
-  <div class="result-inner">
-    <div class="result-hero" id="result-hero">
-      <p class="result-eyebrow">你的 Holland 類型</p>
-      <div class="result-type-code" id="result-code"></div>
-      <div class="result-type-name" id="result-name"></div>
-      <p class="result-summary" id="result-summary"></p>
-    </div>
+<div id="result">
+<div class="result-inner">
 
-    <div class="hexagon-chart">
-      <svg class="hex-svg" id="hex-svg" width="320" height="300" viewBox="0 0 320 300"></svg>
-    </div>
-
-    <div class="scores-grid" id="scores-grid"></div>
-
-    <div class="career-section" id="traits-section">
-      <h3>人格特質</h3>
-      <ul class="trait-list" id="traits-list"></ul>
-    </div>
-
-    <div class="career-section" id="careers-section">
-      <h3>適合職業方向</h3>
-      <div class="career-tags" id="careers-tags"></div>
-    </div>
-
-    <button class="btn-restart" onclick="restart()">↺ 重新測驗</button>
+  <div class="result-hero" id="result-hero">
+    <p class="result-eyebrow">你的 Holland 三碼類型</p>
+    <div class="result-code" id="res-code"></div>
+    <div class="result-names" id="res-names"></div>
+    <p class="result-desc" id="res-desc"></p>
   </div>
-</section>
+
+  <div class="hex-wrap">
+    <svg id="hex-svg" width="300" height="280" viewBox="0 0 300 280" style="overflow:visible;"></svg>
+  </div>
+
+  <div class="scores-section">
+    <h3>六型得分分布</h3>
+    <div id="scores-bars"></div>
+  </div>
+
+  <div class="three-grid" id="three-grid"></div>
+
+  <div class="traits-section" id="traits-section">
+    <h3>你的主要特質（依主型）</h3>
+    <ul class="trait-list" id="traits-list"></ul>
+  </div>
+
+  <div class="result-footer">
+    <button class="btn-back" onclick="restart()">↺ 重新測驗</button>
+    <button class="btn-back accent" onclick="window.location.href='index.html'">← 回工具箱</button>
+  </div>
+</div>
+<div class="footer">河馬的小工具箱 © 2026 · 本工具僅供自我探索，不構成職涯建議</div>
+</div>
 
 <script>
-const TYPES = {
-  R: {
-    name: '實用型 Realistic',
-    color: '#E8521A',
-    bg: '#FFF4EE',
-    summary: '你偏好具體、實際的活動，喜歡動手操作，擅長使用工具、機械或從事戶外工作，注重實際成果，不喜歡抽象理論。',
-    traits: ['動手能力強，喜愛實際操作', '踏實務實，追求具體成果', '偏好戶外或機械相關環境', '自給自足，獨立性強', '不喜歡繁複的社交場合'],
-    careers: ['工程師','建築師','機械師','農業技術員','木工師傅','飛行員','廚師','外科醫師','消防員','測量師']
+// ── DATA ──
+const T = {
+  R:{
+    name:'實用型',en:'Realistic',color:'#E8521A',
+    desc:'偏好具體、動手的工作，擅長操作工具、機械或從事戶外活動，注重實際成果，不喜歡抽象理論或過多社交。',
+    traits:['動手能力強，喜愛實際操作','踏實務實，追求具體成果','偏好戶外或機械環境','獨立自主，不需要太多指引','直接坦率，不喜歡繁複的社交場合'],
+    careers:['工程師','建築師','機械師','廚師','消防員','農業技術員','飛行員','外科醫師','木工師傅','測量師']
   },
-  I: {
-    name: '研究型 Investigative',
-    color: '#2563EB',
-    bg: '#EFF6FF',
-    summary: '你好奇心旺盛，喜歡觀察、分析與解決複雜問題，擅長邏輯推理與科學研究，傾向獨立思考，享受知識探索的過程。',
-    traits: ['分析思維強，邏輯清晰', '對知識有強烈的求知慾', '偏好獨立研究，不喜歡被指揮', '精確嚴謹，注重細節', '享受解決複雜問題的成就感'],
-    careers: ['科學家','數據分析師','醫師','藥劑師','心理師','資訊工程師','研究員','數學家','生物學家','經濟學家']
+  I:{
+    name:'研究型',en:'Investigative',color:'#2563EB',
+    desc:'好奇心旺盛，喜歡觀察、分析與解決複雜問題，擅長邏輯推理，傾向獨立思考，享受知識探索的過程。',
+    traits:['分析思維強，邏輯清晰','對知識有強烈的求知慾','偏好獨立研究，不喜歡被指揮','精確嚴謹，注重細節','享受解決複雜問題的成就感'],
+    careers:['科學家','數據分析師','醫師','藥劑師','資訊工程師','研究員','數學家','生物學家','心理師','經濟學家']
   },
-  A: {
-    name: '藝術型 Artistic',
-    color: '#9333EA',
-    bg: '#FAF5FF',
-    summary: '你富有創意與想像力，喜歡透過藝術、音樂、文字等方式表達自我，偏好自由、彈性的工作環境，討厭過於規律的工作。',
-    traits: ['創造力豐富，想像力無限', '情感細膩，善於表達', '偏好自由開放的工作環境', '對美感有高度敏銳', '獨立特行，不喜歡墨守成規'],
-    careers: ['設計師','音樂家','作家','演員','攝影師','插畫師','廣告創意','動畫師','室內設計師','時裝設計師']
+  A:{
+    name:'藝術型',en:'Artistic',color:'#9333EA',
+    desc:'富有創意與想像力，喜歡透過藝術、音樂、文字等方式表達自我，偏好自由彈性的工作環境，討厭過於規律的流程。',
+    traits:['創造力豐富，想像力無限','情感細膩，善於表達','對美感有高度敏銳','獨立特行，不喜歡墨守成規','偏好自由開放的工作方式'],
+    careers:['設計師','音樂家','作家','演員','攝影師','插畫師','廣告創意','動畫師','室內設計師','時裝設計師']
   },
-  S: {
-    name: '社會型 Social',
-    color: '#16A34A',
-    bg: '#F0FDF4',
-    summary: '你熱衷於與人互動、助人為樂，善於溝通、傾聽與教導，在教育、輔導和服務領域中能充分發揮所長，具有強烈的同理心。',
-    traits: ['善於溝通與傾聽', '富有同理心，關心他人', '喜歡團隊合作', '擅長教導、輔導與說服', '熱心助人，具有社會責任感'],
-    careers: ['教師','社工師','心理諮商師','護理師','人力資源','公關專員','志工協調員','職能治療師','牧師','兒童照護師']
+  S:{
+    name:'社會型',en:'Social',color:'#16A34A',
+    desc:'熱衷與人互動、助人為樂，善於溝通、傾聽與教導，在教育、輔導與服務領域能充分發揮，具有強烈同理心。',
+    traits:['善於溝通與傾聽','富有同理心，關心他人','喜歡團隊合作','擅長教導、輔導與說服','熱心助人，具有社會責任感'],
+    careers:['教師','社工師','心理諮商師','護理師','人力資源','公關專員','職能治療師','兒童照護師','牧師','志工協調員']
   },
-  E: {
-    name: '企業型 Enterprising',
-    color: '#CA8A04',
-    bg: '#FFFBEB',
-    summary: '你充滿自信與領導魅力，喜歡說服他人、達成目標，適合業務、管理與創業相關工作，對權力與影響力有強烈的追求。',
-    traits: ['自信積極，勇於冒險', '領導力強，善於說服', '目標導向，追求成就', '喜歡競爭與挑戰', '口才流利，具有感染力'],
-    careers: ['企業主管','銷售業務','律師','政治人物','創業家','房仲顧問','行銷經理','公司負責人','投資顧問','媒體主持人']
+  E:{
+    name:'企業型',en:'Enterprising',color:'#CA8A04',
+    desc:'充滿自信與領導魅力，喜歡說服他人、達成目標，適合業務、管理與創業，對權力與影響力有強烈的追求。',
+    traits:['自信積極，勇於冒險','領導力強，善於說服','目標導向，追求成就','喜歡競爭與挑戰','口才流利，具有感染力'],
+    careers:['企業主管','銷售業務','律師','政治人物','創業家','房仲顧問','行銷經理','投資顧問','媒體主持人','公司負責人']
   },
-  C: {
-    name: '事務型 Conventional',
-    color: '#0891B2',
-    bg: '#ECFEFF',
-    summary: '你做事有條理、講求精確，喜歡在有明確規則的環境中工作，擅長處理數字、資料與行政事務，是可靠穩定的團隊成員。',
-    traits: ['有條不紊，注重細節', '可靠穩定，遵守規則', '擅長資料整理與數字處理', '謹慎保守，不喜歡模糊地帶', '效率高，執行力強'],
-    careers: ['會計師','行政專員','秘書','稽核師','銀行員','統計師','圖書館員','法規人員','資料管理師','財務分析師']
+  C:{
+    name:'事務型',en:'Conventional',color:'#0891B2',
+    desc:'做事有條理、講求精確，喜歡在有明確規則的環境工作，擅長處理數字、資料與行政事務，是可靠穩定的成員。',
+    traits:['有條不紊，注重細節','可靠穩定，遵守規則','擅長資料整理與數字處理','謹慎保守，不喜歡模糊地帶','效率高，執行力強'],
+    careers:['會計師','行政專員','秘書','稽核師','銀行員','統計師','圖書館員','法規人員','資料管理師','財務分析師']
   }
 };
 
+const ORDER = ['R','I','A','S','E','C'];
+
 const QUESTIONS = [
   // R
-  { type:'R', text:'我喜歡動手修理或組裝東西（如電器、傢具、機械）' },
-  { type:'R', text:'我享受從事戶外、體力性的工作' },
-  { type:'R', text:'我喜歡操作各種工具或機器設備' },
-  { type:'R', text:'我對如何讓東西正常運作感到好奇' },
-  { type:'R', text:'我喜歡農業、園藝或與大自然相關的活動' },
-  { type:'R', text:'我覺得實際動手做比讀書學理論更有趣' },
+  {t:'R', q:'我喜歡動手修理或組裝東西（電器、傢具、機械等）'},
+  {t:'R', q:'我享受從事需要體力或戶外性質的工作'},
+  {t:'R', q:'我喜歡操作工具、機器或精密設備'},
+  {t:'R', q:'比起讀書研究，我更喜歡實際動手做'},
+  {t:'R', q:'我對農業、園藝或與大自然相關的活動感興趣'},
+  {t:'R', q:'我擅長用雙手解決實際問題'},
   // I
-  { type:'I', text:'我喜歡研究問題，找出背後的原因與規律' },
-  { type:'I', text:'我對科學、數學或哲學方面的問題很感興趣' },
-  { type:'I', text:'我喜歡獨立思考，而不是依賴別人的意見' },
-  { type:'I', text:'我會主動查閱資料來滿足自己的好奇心' },
-  { type:'I', text:'我擅長分析複雜的情況，找出邏輯上的解答' },
-  { type:'I', text:'我喜歡閱讀學術書籍或研究報告' },
+  {t:'I', q:'我喜歡研究事物背後的原理與規律'},
+  {t:'I', q:'我對科學、數學或哲學方面的問題很感興趣'},
+  {t:'I', q:'我傾向獨立思考，不喜歡完全依賴別人的意見'},
+  {t:'I', q:'我會主動查閱資料、文獻來滿足好奇心'},
+  {t:'I', q:'我擅長分析複雜情況，找出邏輯上的解答'},
+  {t:'I', q:'我享受閱讀學術書籍或深度研究的過程'},
   // A
-  { type:'A', text:'我喜歡創作，例如寫作、繪畫、音樂或設計' },
-  { type:'A', text:'我對美學與藝術表現有強烈的感受' },
-  { type:'A', text:'我喜歡在工作中表達自己的創意與個性' },
-  { type:'A', text:'我討厭太過規律、一成不變的工作流程' },
-  { type:'A', text:'我經常用獨特的方式看待事物，不走尋常路' },
-  { type:'A', text:'我覺得自由發揮比遵守固定規則更重要' },
+  {t:'A', q:'我喜歡創作，例如寫作、繪畫、音樂或設計'},
+  {t:'A', q:'我對美學與藝術表現有強烈的感受與看法'},
+  {t:'A', q:'我喜歡在工作中融入自己的創意與個性'},
+  {t:'A', q:'我討厭太過規律、一成不變的工作流程'},
+  {t:'A', q:'我經常用獨特的角度看待事物，不愛走尋常路'},
+  {t:'A', q:'對我來說，自由表達比嚴格遵守規則更重要'},
   // S
-  { type:'S', text:'我喜歡幫助別人解決問題或學習新事物' },
-  { type:'S', text:'我擅長傾聽，能理解他人的感受與需求' },
-  { type:'S', text:'我喜歡與人互動，在社群中感到充實' },
-  { type:'S', text:'我在教導、輔導或照顧他人時感到有意義' },
-  { type:'S', text:'我重視人與人之間的情感連結與合作' },
-  { type:'S', text:'我希望我的工作能直接幫助或改善他人的生活' },
+  {t:'S', q:'我喜歡幫助他人解決問題或學習新事物'},
+  {t:'S', q:'我擅長傾聽，能感受並理解他人的情緒與需求'},
+  {t:'S', q:'我在與人互動、合作的環境中感到充實'},
+  {t:'S', q:'我在教導、輔導或照顧他人時覺得很有意義'},
+  {t:'S', q:'我重視人與人之間的情感連結'},
+  {t:'S', q:'我希望我的工作能直接幫助或改善他人的生活'},
   // E
-  { type:'E', text:'我喜歡領導團隊，推動計畫達成目標' },
-  { type:'E', text:'我擅長說服他人，讓他們接受我的想法' },
-  { type:'E', text:'我對商業機會、競爭與挑戰感到興奮' },
-  { type:'E', text:'我喜歡承擔責任，做出重要決策' },
-  { type:'E', text:'我有強烈的成就動機，想要出人頭地' },
-  { type:'E', text:'我喜歡公開演說或在眾人面前表現自己' },
+  {t:'E', q:'我喜歡帶領團隊，推動計畫朝目標前進'},
+  {t:'E', q:'我擅長說服他人，讓對方接受我的想法'},
+  {t:'E', q:'我對商業機會、競爭與挑戰感到興奮'},
+  {t:'E', q:'我喜歡承擔責任，做出重要決策'},
+  {t:'E', q:'我有強烈的成就動機，希望在事業上出人頭地'},
+  {t:'E', q:'我喜歡公開演說或在眾人面前展現自己'},
   // C
-  { type:'C', text:'我喜歡有條理地整理資料、檔案或報表' },
-  { type:'C', text:'我在有明確規則與程序的環境中工作得最好' },
-  { type:'C', text:'我注重精確性，不允許自己犯錯' },
-  { type:'C', text:'我擅長處理數字、表格或行政事務' },
-  { type:'C', text:'我覺得維持秩序與一致性非常重要' },
-  { type:'C', text:'我喜歡照著計畫執行，而不喜歡臨時變動' },
+  {t:'C', q:'我喜歡有條理地整理資料、檔案或報表'},
+  {t:'C', q:'在有明確規則與程序的環境中，我工作得最好'},
+  {t:'C', q:'我非常注重精確性，不容許自己犯粗心的錯誤'},
+  {t:'C', q:'我擅長處理數字、表格或行政類事務'},
+  {t:'C', q:'我覺得維持秩序與一致性非常重要'},
+  {t:'C', q:'我喜歡照著計畫確實執行，不喜歡臨時變動'},
 ];
 
-const TYPE_ORDER = ['R','I','A','S','E','C'];
-const GROUPS = [];
-for(let i=0; i<36; i+=6) GROUPS.push(QUESTIONS.slice(i,i+6));
+// Group by type (6 groups × 6 Qs)
+const GROUPS = ORDER.map(type => QUESTIONS.filter(q=>q.t===type));
 
-let currentGroup = 0;
-let answers = {}; // questionIndex -> bool
+let curGroup = 0;
+const answers = new Array(36).fill(0); // 0=未答, 1-5=分數
 
-function startQuiz(){
-  document.getElementById('cover').style.display = 'none';
-  document.getElementById('quiz').style.display = 'block';
-  buildGroups();
-  showGroup(0);
-}
-
-function buildGroups(){
-  const container = document.getElementById('groups-container');
-  const typeColors = Object.fromEntries(TYPE_ORDER.map(t=>[t,TYPES[t].color]));
+// ── BUILD UI ──
+(function build(){
+  const wrap = document.getElementById('groups-wrap');
   GROUPS.forEach((group, gi)=>{
-    const t = TYPE_ORDER[gi];
+    const type = ORDER[gi];
     const div = document.createElement('div');
-    div.className = 'question-group';
-    div.id = `group-${gi}`;
+    div.className = 'q-group';
+    div.id = `g${gi}`;
+
+    let cards = '';
+    group.forEach((q, qi)=>{
+      const idx = gi*6+qi;
+      let btns = '';
+      for(let v=1;v<=5;v++){
+        btns += `<button class="scale-btn" id="sb-${idx}-${v}"
+          style="--accent:${T[type].color}"
+          onclick="pick(${idx},${v})">
+          <div class="scale-circle"></div>
+          <span class="scale-num">${v}</span>
+        </button>`;
+      }
+      cards += `<div class="q-card">
+        <div class="q-text">${qi+1}. ${q.q}</div>
+        <div class="scale-row">${btns}</div>
+        <div class="scale-labels">
+          <span>完全不像我</span><span>非常像我</span>
+        </div>
+      </div>`;
+    });
+
     div.innerHTML = `
       <div class="group-header">
-        <div class="group-dot" style="background:${TYPES[t].color}"></div>
-        <span class="group-label">${TYPES[t].name}</span>
+        <div class="group-pip" style="background:${T[type].color}"></div>
+        <span class="group-title">${T[type].name}（${type}）${T[type].en}</span>
       </div>
-      ${group.map((q, qi)=>{
-        const idx = gi*6+qi;
-        return `<div class="q-card" id="q-${idx}" 
-          style="--accent:${TYPES[t].color};--accent-bg:${TYPES[t].bg}"
-          onclick="toggleAnswer(${idx}, this)">
-          <div class="q-check">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <span class="q-text">${q.text}</span>
-        </div>`;
-      }).join('')}
-    `;
-    container.appendChild(div);
+      ${cards}`;
+    wrap.appendChild(div);
   });
-}
+  showGroup(0);
+})();
 
-function toggleAnswer(idx, el){
-  if(answers[idx]){
-    delete answers[idx];
-    el.classList.remove('selected');
-  } else {
-    answers[idx] = true;
-    el.classList.add('selected');
+function pick(idx, val){
+  answers[idx] = val;
+  const gi = Math.floor(idx/6);
+  const type = ORDER[gi];
+  for(let v=1;v<=5;v++){
+    const btn = document.getElementById(`sb-${idx}-${v}`);
+    if(btn) btn.classList.toggle('selected', v===val);
   }
 }
 
 function showGroup(i){
-  document.querySelectorAll('.question-group').forEach(g=>g.classList.remove('active'));
-  document.getElementById(`group-${i}`).classList.add('active');
+  document.querySelectorAll('.q-group').forEach(g=>g.classList.remove('active'));
+  document.getElementById(`g${i}`).classList.add('active');
+  curGroup = i;
   const pct = ((i+1)/GROUPS.length)*100;
-  document.getElementById('progress-fill').style.width = pct+'%';
-  document.getElementById('page-count').textContent = `${i+1} / ${GROUPS.length}`;
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-label').textContent = `第 ${i+1} 組 / 共 ${GROUPS.length} 組`;
+  document.getElementById('page-info').textContent = `${i+1} / ${GROUPS.length}`;
   document.getElementById('btn-prev').disabled = i===0;
   const isLast = i===GROUPS.length-1;
-  const btnNext = document.getElementById('btn-next');
-  btnNext.textContent = isLast ? '查看結果 ✓' : '下一組 →';
-  currentGroup = i;
+  document.getElementById('btn-next').textContent = isLast ? '查看結果 ✓' : '下一組 →';
 }
 
-function prevGroup(){ if(currentGroup>0) showGroup(currentGroup-1); }
-function nextGroup(){
-  if(currentGroup<GROUPS.length-1){ showGroup(currentGroup+1); }
+function prevG(){ if(curGroup>0) showGroup(curGroup-1); }
+function nextG(){
+  if(curGroup < GROUPS.length-1){ showGroup(curGroup+1); }
   else { showResult(); }
 }
 
+// ── SCORES ──
 function computeScores(){
-  const scores = {R:0,I:0,A:0,S:0,E:0,C:0};
-  QUESTIONS.forEach((q,idx)=>{ if(answers[idx]) scores[q.type]++; });
-  return scores;
+  const s = {R:0,I:0,A:0,S:0,E:0,C:0};
+  QUESTIONS.forEach((q,i)=>{ s[q.t] += answers[i]||3; }); // default 3 if unanswered
+  return s;
 }
 
+// ── RESULT ──
 function showResult(){
   document.getElementById('quiz').style.display='none';
   document.getElementById('result').style.display='block';
+  window.scrollTo(0,0);
 
   const scores = computeScores();
-  const sorted = TYPE_ORDER.slice().sort((a,b)=>scores[b]-scores[a]);
-  const top = sorted[0];
-  const second = sorted[1];
-  const code = top + (scores[top]===scores[second]&&second!==top ? second : (scores[second]>0?second:''));
-
-  const T = TYPES[top];
+  const sorted = ORDER.slice().sort((a,b)=>scores[b]-scores[a]);
+  const top3 = sorted.slice(0,3);
+  const code = top3.join('');
 
   // Hero
-  document.getElementById('result-hero').style.setProperty('--hero-color', top==='R'?'#7c2d12':top==='I'?'#1e3a5f':top==='A'?'#3b1d5e':top==='S'?'#14532d':top==='E'?'#713f12':'#164e63');
-  document.getElementById('result-code').textContent = code;
-  document.getElementById('result-name').textContent = T.name;
-  document.getElementById('result-summary').textContent = T.summary;
+  const heroGlow = {
+    R:'#7c2d12',I:'#1e3a5f',A:'#3b1d5e',
+    S:'#14532d',E:'#713f12',C:'#164e63'
+  };
+  const hero = document.getElementById('result-hero');
+  hero.style.setProperty('--hero-glow', heroGlow[top3[0]]);
+  document.getElementById('res-code').textContent = code;
+  document.getElementById('res-code').style.color = T[top3[0]].color;
+  document.getElementById('res-names').textContent =
+    top3.map(t=>`${T[t].name}（${t}）`).join(' × ');
+  document.getElementById('res-desc').textContent =
+    `你同時具備 ${top3.map(t=>T[t].name).join('、')} 的傾向。Holland 理論中，三碼的組合代表你的複合型人格特質，每一型都是你真實的一部分。`;
 
-  // Hex radar chart
-  drawHexRadar(scores);
+  // Hex radar
+  drawHex(scores, T[top3[0]].color);
 
-  // Score cards
-  const grid = document.getElementById('scores-grid');
-  grid.innerHTML = '';
-  const max = Math.max(...Object.values(scores), 1);
-  TYPE_ORDER.forEach(t=>{
-    const s = scores[t]; const pct = Math.round(s/6*100);
-    grid.innerHTML += `<div class="score-card">
-      <div class="score-card-top">
-        <div class="score-label">
-          <div class="score-dot" style="background:${TYPES[t].color}"></div>
-          ${TYPES[t].name}
-        </div>
-        <span class="score-num" style="color:${TYPES[t].color}">${s}</span>
+  // Bars
+  const maxScore = 30;
+  let bars = '';
+  ORDER.forEach(t=>{
+    const pct = Math.round(scores[t]/maxScore*100);
+    const rank = sorted.indexOf(t)+1;
+    bars += `<div class="score-row">
+      <div class="score-type-label" style="color:${T[t].color}">${t} ${T[t].name}</div>
+      <div class="score-bar-bg">
+        <div class="score-bar-fill" style="width:${pct}%;background:${T[t].color}"></div>
       </div>
-      <div class="score-bar-bg"><div class="score-bar-fill" style="width:${pct}%;background:${TYPES[t].color}"></div></div>
-      <div class="score-sub">${pct}% 符合度</div>
+      <div class="score-val">${scores[t]} <span style="font-size:11px;color:#bbb">/ 30</span></div>
     </div>`;
   });
+  document.getElementById('scores-bars').innerHTML = bars;
 
-  // Traits
-  const ul = document.getElementById('traits-list');
-  ul.style.setProperty('--accent-color', T.color);
-  ul.innerHTML = T.traits.map(tr=>`<li>${tr}</li>`).join('');
+  // Three type cards
+  let cards = '';
+  top3.forEach((t,i)=>{
+    const rank = i===0?'主型':i===1?'副型':'輔型';
+    cards += `<div class="type-card">
+      <div class="type-card-header">
+        <div class="type-badge" style="background:${T[t].color}">${t}</div>
+        <div>
+          <div class="type-card-name">${T[t].name} <span style="font-size:12px;color:#aaa;font-weight:normal;">${rank}</span></div>
+          <div class="type-card-sub">${T[t].en}</div>
+        </div>
+      </div>
+      <p>${T[t].desc}</p>
+      <div class="career-chips">
+        ${T[t].careers.slice(0,6).map(c=>`<span class="career-chip">${c}</span>`).join('')}
+      </div>
+    </div>`;
+  });
+  document.getElementById('three-grid').innerHTML = cards;
 
-  // Careers
-  const tagsEl = document.getElementById('careers-tags');
-  tagsEl.innerHTML = T.careers.map(c=>`<span class="career-tag">${c}</span>`).join('');
+  // Traits (top type)
+  document.getElementById('traits-list').style.setProperty('--top-color', T[top3[0]].color);
+  document.getElementById('traits-list').innerHTML =
+    T[top3[0]].traits.map(tr=>`<li>${tr}</li>`).join('');
+
+  // Animate bars
+  setTimeout(()=>{
+    document.querySelectorAll('.score-bar-fill').forEach(el=>{
+      el.style.width = el.style.width; // trigger
+    });
+  }, 80);
 }
 
-function drawHexRadar(scores){
+function drawHex(scores, topColor){
   const svg = document.getElementById('hex-svg');
-  const cx=160, cy=150, r=110;
-  const labels = ['R','I','A','S','E','C'];
-  const angles = labels.map((_,i)=> (i*60 - 90) * Math.PI/180);
+  const cx=150, cy=140, r=105;
+  const angles = ORDER.map((_,i)=>(i*60-90)*Math.PI/180);
+  const maxScore = 30;
+  function pt(a,rad){ return [cx+rad*Math.cos(a), cy+rad*Math.sin(a)]; }
 
-  function pt(angle, radius){ return [cx + radius*Math.cos(angle), cy + radius*Math.sin(angle)]; }
-
-  let html = '';
-  // Background grid
+  let html='';
+  // Grid rings
   [0.25,0.5,0.75,1].forEach(f=>{
-    const pts = angles.map(a=>pt(a,r*f)).map(p=>p.join(',')).join(' ');
-    html += `<polygon points="${pts}" fill="none" stroke="#E7E5E4" stroke-width="1"/>`;
+    const pts=angles.map(a=>pt(a,r*f)).map(p=>p.join(',')).join(' ');
+    html+=`<polygon points="${pts}" fill="none" stroke="#ddd" stroke-width="1"/>`;
   });
-  // Axis lines
+  // Axes
   angles.forEach(a=>{
     const [x2,y2]=pt(a,r);
-    html += `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#E7E5E4" stroke-width="1"/>`;
+    html+=`<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#ddd" stroke-width="1"/>`;
   });
-
-  // Data polygon
-  const maxQ = 6;
-  const dataPts = labels.map((t,i)=>{
-    const frac = scores[t]/maxQ;
+  // Data
+  const dataPts = ORDER.map((t,i)=>{
+    const frac=scores[t]/maxScore;
     return pt(angles[i], r*frac);
   });
-  const dpStr = dataPts.map(p=>p.join(',')).join(' ');
-  const topColor = labels.reduce((a,b)=>scores[a]>=scores[b]?a:b);
-  html += `<polygon points="${dpStr}" fill="${TYPES[topColor].color}" fill-opacity="0.18" stroke="${TYPES[topColor].color}" stroke-width="2"/>`;
-
-  // Dots
+  html+=`<polygon points="${dataPts.map(p=>p.join(',')).join(' ')}"
+    fill="${topColor}" fill-opacity="0.18" stroke="${topColor}" stroke-width="2.5"/>`;
   dataPts.forEach(([x,y],i)=>{
-    const t = labels[i];
-    html += `<circle cx="${x}" cy="${y}" r="5" fill="${TYPES[t].color}"/>`;
+    html+=`<circle cx="${x}" cy="${y}" r="5" fill="${T[ORDER[i]].color}"/>`;
   });
-
   // Labels
-  labels.forEach((t,i)=>{
-    const [lx,ly] = pt(angles[i], r+24);
-    const anchor = lx<cx-5?'end':lx>cx+5?'start':'middle';
-    html += `<text x="${lx}" y="${ly+5}" text-anchor="${anchor}" font-family="'Noto Sans TC',sans-serif" font-size="13" font-weight="500" fill="${TYPES[t].color}">${t}</text>`;
+  ORDER.forEach((t,i)=>{
+    const [lx,ly]=pt(angles[i],r+22);
+    const anchor=lx<cx-5?'end':lx>cx+5?'start':'middle';
+    html+=`<text x="${lx}" y="${ly+5}" text-anchor="${anchor}"
+      font-family="'Microsoft JhengHei',sans-serif" font-size="13" font-weight="bold"
+      fill="${T[t].color}">${t}</text>`;
   });
-
-  svg.innerHTML = html;
+  svg.innerHTML=html;
 }
 
 function restart(){
-  answers={};
-  currentGroup=0;
+  answers.fill(0);
+  document.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('selected'));
   document.getElementById('result').style.display='none';
-  document.getElementById('groups-container').innerHTML='';
-  document.getElementById('cover').style.display='flex';
+  document.getElementById('quiz').style.display='block';
+  showGroup(0);
+  window.scrollTo(0,0);
 }
 </script>
 </body>
