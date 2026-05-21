@@ -1,284 +1,201 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>成人 ADHD 自我檢測表</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>河馬的小工具箱</title>
 
 <style>
-    body{
-        font-family: "Microsoft JhengHei", sans-serif;
-        background:#f4f4f4;
-        margin:0;
-        padding:20px;
-        color:#222;
-        line-height:1.7;
-    }
 
-    .container{
-        max-width:1000px;
-        margin:auto;
-        background:white;
-        padding:30px;
-        border-radius:16px;
-        box-shadow:0 4px 15px rgba(0,0,0,0.08);
-    }
+body{
+    margin:0;
+    font-family:"Microsoft JhengHei",sans-serif;
+    background:#f4f6f9;
+    color:#222;
+}
 
-    h1{
-        text-align:center;
-        margin-bottom:10px;
-    }
+.header{
+    background:linear-gradient(135deg,#2c6bed,#5f8fff);
+    color:white;
+    padding:60px 20px;
+    text-align:center;
+}
 
-    .note{
-        background:#fff7d6;
-        border-left:5px solid #e0b400;
-        padding:15px;
-        margin-bottom:25px;
-        border-radius:8px;
-    }
+.header h1{
+    margin:0;
+    font-size:42px;
+}
 
-    h2{
-        margin-top:40px;
-        border-bottom:2px solid #ddd;
-        padding-bottom:8px;
-    }
+.header p{
+    margin-top:15px;
+    font-size:18px;
+    opacity:0.9;
+}
 
-    table{
-        width:100%;
-        border-collapse:collapse;
-        margin-top:15px;
-        margin-bottom:30px;
-    }
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:40px 20px;
+}
 
-    th, td{
-        border:1px solid #ddd;
-        padding:12px;
-        vertical-align:top;
-    }
+.section-title{
+    font-size:28px;
+    margin-bottom:25px;
+    font-weight:bold;
+}
 
-    th{
-        background:#f0f0f0;
-    }
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+}
 
-    tr:nth-child(even){
-        background:#fafafa;
-    }
+.card{
+    background:white;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    transition:0.2s;
+}
 
-    .question{
-        width:55%;
-    }
+.card:hover{
+    transform:translateY(-5px);
+}
 
-    .score{
-        text-align:center;
-        width:9%;
-    }
+.card h2{
+    margin-top:0;
+    font-size:24px;
+}
 
-    .result-box{
-        background:#eef7ff;
-        padding:20px;
-        border-radius:12px;
-        margin-top:20px;
-    }
+.card p{
+    color:#555;
+    line-height:1.7;
+}
 
-    button{
-        background:#2c6bed;
-        color:white;
-        border:none;
-        padding:14px 24px;
-        border-radius:10px;
-        cursor:pointer;
-        font-size:16px;
-        margin-top:20px;
-    }
+.button{
+    display:inline-block;
+    margin-top:15px;
+    padding:12px 20px;
+    background:#2c6bed;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:bold;
+}
 
-    button:hover{
-        background:#1f54c2;
-    }
+.button:hover{
+    background:#1d4fb8;
+}
 
-    .footer{
-        margin-top:40px;
-        font-size:14px;
-        color:#666;
-    }
+.footer{
+    text-align:center;
+    padding:40px 20px;
+    color:#666;
+    font-size:14px;
+}
 
-    @media(max-width:768px){
-        table{
-            font-size:14px;
-        }
-    }
+.note{
+    background:#fff7d8;
+    border-left:6px solid #f0c000;
+    padding:18px;
+    border-radius:12px;
+    margin-bottom:40px;
+    line-height:1.8;
+}
+
+@media(max-width:768px){
+
+.header h1{
+    font-size:32px;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<h1>成人 ADHD 自我檢測表</h1>
-
-<div class="note">
-<b>注意：</b><br>
-這不是正式醫療診斷，而是依據 DSM-5 成人 ADHD 常見特徵整理的非正式自我檢測。<br>
-若長期影響工作、人際、情緒或生活功能，建議尋求精神科醫師或臨床心理師進一步評估。
+<div class="header">
+    <h1>河馬的小工具箱</h1>
+    <p>
+        特教 × 職涯 × 神經多樣性 × 小型互動工具
+    </p>
 </div>
 
-<p>
-請依照最近半年內的狀況評分：
-</p>
+<div class="container">
 
-<ul>
-<li>0 分＝幾乎沒有</li>
-<li>1 分＝偶爾</li>
-<li>2 分＝經常</li>
-<li>3 分＝非常常</li>
-</ul>
+<div class="note">
+<b>提醒：</b><br>
+這些工具主要作為自我理解、職涯探索與教育用途使用。<br>
+內容不等於正式醫療診斷，若長期影響生活功能，仍建議尋求專業協助。
+</div>
 
-<h2>一、注意力與執行功能</h2>
+<div class="section-title">
+目前工具
+</div>
 
-<table>
-<tr>
-<th class="question">題目</th>
-<th class="score">0</th>
-<th class="score">1</th>
-<th class="score">2</th>
-<th class="score">3</th>
-</tr>
+<div class="grid">
 
-<script>
-const questions1 = [
-"做事情時很容易分心",
-"常忘記生活中的小事",
-"很難把事情完整收尾",
-"需要長時間專注時會痛苦",
-"常拖延到最後一刻",
-"容易把東西放錯地方",
-"別人講話時常恍神",
-"腦中同時有很多想法",
-"對有興趣的事異常投入，但沒興趣的事難以啟動"
-];
+<div class="card">
+    <h2>成人 ADHD 自我檢測</h2>
 
-const questions2 = [
-"很難真正放鬆",
-"容易插話或搶話",
-"排隊等待時容易煩躁",
-"常衝動做決定",
-"情緒起伏很快",
-"容易覺得無聊",
-"做事情太急而粗心",
-"有時會過度講話"
-];
+    <p>
+        依據 DSM-5 成人 ADHD 常見特徵整理的簡易版自我檢測工具。<br>
+        適合初步了解自己的注意力、執行功能與衝動特質。
+    </p>
 
-const questions3 = [
-"時間感很差",
-"明明能力不差，但人生常有失控感",
-"常被說太散、太跳、太衝動或太情緒化"
-];
+    <a class="button" href="adhd.html">
+        開始測驗
+    </a>
+</div>
 
-function createRows(list, startId){
-    let html = "";
-    list.forEach((q,index)=>{
-        html += "<tr>";
-        html += `<td>${startId + index}. ${q}</td>`;
-        for(let i=0;i<=3;i++){
-            html += `<td style="text-align:center;">
-                        <input type="radio" name="q${startId+index}" value="${i}">
-                    </td>`;
-        }
-        html += "</tr>";
-    });
-    document.write(html);
-}
-</script>
+<div class="card">
+    <h2>ASD 特徵整理</h2>
 
-<script>createRows(questions1,1)</script>
+    <p>
+        整理 ASD 常見社交、感官、興趣與生活特徵。<br>
+        預計加入成人女性 ASD 與 masking 相關內容。
+    </p>
 
-</table>
+    <a class="button" href="#">
+        建置中
+    </a>
+</div>
 
-<h2>二、過動／衝動特徵</h2>
+<div class="card">
+    <h2>職涯探索工具</h2>
 
-<table>
-<tr>
-<th class="question">題目</th>
-<th class="score">0</th>
-<th class="score">1</th>
-<th class="score">2</th>
-<th class="score">3</th>
-</tr>
+    <p>
+        透過生活經驗、興趣與特質，
+        協助思考未來工作方向與職涯可能性。
+    </p>
 
-<script>createRows(questions2,10)</script>
+    <a class="button" href="#">
+        建置中
+    </a>
+</div>
 
-</table>
+<div class="card">
+    <h2>資源教室專區</h2>
 
-<h2>三、成人 ADHD 常見狀態</h2>
+    <p>
+        活動資訊、回饋單、學生工具與各類資源入口。
+    </p>
 
-<table>
-<tr>
-<th class="question">題目</th>
-<th class="score">0</th>
-<th class="score">1</th>
-<th class="score">2</th>
-<th class="score">3</th>
-</tr>
+    <a class="button" href="#">
+        建置中
+    </a>
+</div>
 
-<script>createRows(questions3,18)</script>
+</div>
 
-</table>
-
-<button onclick="calculateScore()">計算結果</button>
-
-<div class="result-box" id="result">
-尚未計算。
 </div>
 
 <div class="footer">
-<b>提醒：</b><br>
-ADHD 並不等於懶惰或不努力。<br>
-有些成年人直到出社會後，才第一次發現自己的注意力、情緒調節與執行功能長期受到影響。<br><br>
-
-但「像 ADHD」不一定就是 ADHD，焦慮、憂鬱、睡眠不足、創傷壓力、ASD 或長期高壓生活，也可能出現類似狀態。
+    河馬的小工具箱 © 2026
 </div>
-
-</div>
-
-<script>
-
-function calculateScore(){
-
-    let total = 0;
-
-    for(let i=1;i<=20;i++){
-
-        let radios = document.getElementsByName("q"+i);
-
-        for(let r of radios){
-            if(r.checked){
-                total += parseInt(r.value);
-            }
-        }
-    }
-
-    let resultText = "";
-
-    if(total <= 15){
-        resultText = "目前看起來 ADHD 傾向不高。";
-    }
-    else if(total <= 30){
-        resultText = "有部分 ADHD 特徵，若長期影響生活，可進一步了解。";
-    }
-    else if(total <= 45){
-        resultText = "ADHD 傾向明顯，建議考慮正式評估。";
-    }
-    else{
-        resultText = "分數偏高，若生活長期受到影響，建議尋求專業評估。";
-    }
-
-    document.getElementById("result").innerHTML = `
-        <h3>檢測結果</h3>
-        <p><b>總分：</b> ${total} 分</p>
-        <p>${resultText}</p>
-    `;
-}
-
-</script>
 
 </body>
 </html>
