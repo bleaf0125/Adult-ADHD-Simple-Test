@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ASD 特徵檢核表</title>
+<title>成人 ASD 特徵檢核</title>
 
 <style>
 body{
     font-family:"Microsoft JhengHei",sans-serif;
-    background:#f4f6f9;
+    background:#f4f4f4;
     margin:0;
     padding:20px;
     color:#222;
@@ -25,17 +25,10 @@ body{
 h1{text-align:center;}
 .note{
     background:#fff7d6;
-    border-left:6px solid #e0b400;
-    padding:16px;
-    border-radius:10px;
-    margin:20px 0;
-}
-.term-note{
-    background:#eaf3ff;
-    border-left:6px solid #2c6bed;
-    padding:16px;
-    border-radius:10px;
-    margin:20px 0;
+    border-left:5px solid #e0b400;
+    padding:15px;
+    margin-bottom:25px;
+    border-radius:8px;
 }
 h2{
     margin-top:40px;
@@ -57,6 +50,12 @@ th{background:#f0f0f0;}
 tr:nth-child(even){background:#fafafa;}
 .question{width:55%;}
 .score{text-align:center;width:9%;}
+.result-box{
+    background:#eef7ff;
+    padding:20px;
+    border-radius:12px;
+    margin-top:20px;
+}
 button{
     background:#2c6bed;
     color:white;
@@ -65,23 +64,20 @@ button{
     border-radius:10px;
     cursor:pointer;
     font-size:16px;
-}
-.result-box{
-    background:#eef7ff;
-    padding:20px;
-    border-radius:12px;
     margin-top:20px;
+}
+button:hover{background:#1f54c2;}
+.back{
+    margin-top:30px;
+}
+.back a{
+    color:#2c6bed;
+    text-decoration:none;
 }
 .footer{
     margin-top:40px;
     font-size:14px;
     color:#666;
-}
-.back{
-    display:inline-block;
-    margin-top:20px;
-    color:#2c6bed;
-    text-decoration:none;
 }
 @media(max-width:768px){
     table{font-size:14px;}
@@ -91,27 +87,24 @@ button{
 </head>
 
 <body>
+
 <div class="container">
 
-<h1>ASD 特徵檢核表</h1>
+<h1>成人 ASD 特徵檢核</h1>
 
 <div class="note">
 <b>注意：</b><br>
-本檢核表不是正式醫療診斷，而是依據 DSM-5 與 ICD-11 對自閉症類群障礙症核心特徵所整理的教育用途檢核工具。<br>
-若特徵長期影響生活、人際、學習或工作功能，建議尋求精神科醫師、臨床心理師或相關專業人員進一步評估。
+這不是正式診斷工具，而是協助初步理解成人 ASD 相關特徵的檢核表。<br>
+分數較高不代表一定是 ASD；若長期影響生活、人際、工作或情緒狀態，建議尋求精神科醫師或臨床心理師進一步評估。
 </div>
 
-<div class="term-note">
-<b>專業用語提醒：</b><br>
-依據 DSM-5 以及 ICD-11 內容指示，本網站不會顯示亞斯伯格症，或高／低功能自閉症等非專業名詞。
-</div>
+<p>請依照自己長期以來的狀況評分：</p>
 
-<p>請依照長期狀況評分：</p>
 <ul>
 <li>0 分＝幾乎沒有</li>
 <li>1 分＝偶爾</li>
 <li>2 分＝經常</li>
-<li>3 分＝非常常</li>
+<li>3 分＝幾乎總是</li>
 </ul>
 
 <h2>一、社交溝通與互動特徵</h2>
@@ -124,10 +117,59 @@ button{
 <th class="score">2</th>
 <th class="score">3</th>
 </tr>
-<tbody id="section1"></tbody>
+
+<script>
+const questions1 = [
+"在日常對話中，常不知道如何自然接話、延續話題或結束對話",
+"即使努力觀察，仍常難以理解他人的潛台詞、暗示、反話或社交默契",
+"在人際互動中，常被說反應太直接、太跳 tone、太認真或不合時宜",
+"社交後容易出現明顯疲勞感，需要長時間關機或獨處恢復",
+"不太知道如何自然建立、維持或調整人際距離",
+"團體互動時，常不知道自己應該扮演什麼角色，或容易產生格格不入感",
+"比起即興互動，更偏好有明確規則、流程或目的的交流方式"
+];
+
+const questions2 = [
+"對特定主題、作品、人物或系統有長期而高度集中的投入，甚至難以中斷或切換注意力",
+"原本安排好的流程、計畫或心理預期若突然被打亂，容易出現明顯焦慮、煩躁或失控感",
+"對固定流程、習慣、物品位置或做事順序有高度依賴感",
+"會反覆思考同一件事，且難以自行中止或切換",
+"對某些細節、分類、模式或規則有異常強烈的注意力，甚至比整體情境更容易被注意到",
+"壓力大時，可能出現固定動作、重複語句、自我刺激行為或反覆確認",
+"對突如其來的改變適應困難，即使是小變動也可能需要較長時間調整"
+];
+
+const questions3 = [
+"對聲音、光線、氣味、觸感、衣物材質或特定感官刺激特別敏感",
+"在吵雜、混亂、人多或資訊量過大的環境中，容易快速耗能或過載",
+"需要固定習慣、熟悉空間或特定流程，才能維持安全感與穩定感",
+"長時間社交、多人互動或高社交需求情境後，容易出現明顯疲勞、空白或情緒耗竭",
+"從小到大，經常覺得自己和多數人的感受方式或思考方式不太一樣",
+"為了融入群體，曾長期模仿他人的反應、語氣、表情或社交方式",
+"有些事情其實做得到，但在人際理解、環境切換或日常生活中，需要耗費遠高於他人的心理能量"
+];
+
+function createRows(list, startId){
+    let html = "";
+    list.forEach((q,index)=>{
+        let id = startId + index;
+        html += "<tr>";
+        html += `<td>${id}. ${q}</td>`;
+        for(let i=0;i<=3;i++){
+            html += `<td style="text-align:center;">
+                        <input type="radio" name="q${id}" value="${i}">
+                    </td>`;
+        }
+        html += "</tr>";
+    });
+    document.write(html);
+}
+</script>
+
+<script>createRows(questions1,1)</script>
 </table>
 
-<h2>二、重複行為、固定模式與興趣特徵</h2>
+<h2>二、固定模式、切換困難與特殊興趣</h2>
 
 <table>
 <tr>
@@ -137,7 +179,8 @@ button{
 <th class="score">2</th>
 <th class="score">3</th>
 </tr>
-<tbody id="section2"></tbody>
+
+<script>createRows(questions2,8)</script>
 </table>
 
 <h2>三、感覺反應與生活適應特徵</h2>
@@ -150,81 +193,36 @@ button{
 <th class="score">2</th>
 <th class="score">3</th>
 </tr>
-<tbody id="section3"></tbody>
+
+<script>createRows(questions3,15)</script>
 </table>
 
 <button onclick="calculateScore()">計算結果</button>
 
-<div class="result-box" id="result">尚未計算。</div>
+<div class="result-box" id="result">
+尚未計算。
+</div>
 
-<a class="back" href="index.html">← 回到主頁</a>
+<div class="back">
+<a href="index.html">← 回到主頁</a>
+</div>
 
 <div class="footer">
 <b>提醒：</b><br>
-ASD 的表現會因年齡、性別、生活經驗、支持程度與 masking 狀態而有所不同。<br>
-本檢核表只適合初步理解特徵，不適合作為診斷依據。
+ASD 特徵並不是簡單的有或沒有。<br>
+有些人可能只有部分 autistic traits，也可能與 ADHD、焦慮、高敏感、長期壓力或創傷經驗有所重疊。<br>
+本檢核表僅作為自我理解與教育參考，不能取代正式診斷。
 </div>
 
 </div>
 
 <script>
-const questions1 = [
-"在日常對話中，常不知道如何自然地接話或延續話題",
-"難以判斷他人的表情、語氣、暗示或潛台詞",
-"在人際互動中，常被說反應太直接、太跳、太冷或不合時宜",
-"對社交場合感到疲憊，需要大量時間恢復",
-"不太知道如何建立、維持或調整關係距離",
-"團體互動時，容易不知道自己該站在哪個位置或扮演什麼角色",
-"比起即興互動，更偏好有明確規則或固定流程的交流"
-];
-
-const questions2 = [
-"對某些主題、作品、人物、系統或興趣有長期而強烈的投入",
-"生活中若計畫被打亂，容易明顯焦慮、煩躁或失控",
-"偏好固定路線、固定做法、固定物品或固定順序",
-"會反覆思考同一件事，難以停止或切換",
-"對某些細節、分類、規則或模式特別敏感",
-"在壓力下可能出現重複動作、重複語句或固定安撫行為",
-"很難快速接受突如其來的改變"
-];
-
-const questions3 = [
-"對聲音、光線、氣味、觸感、衣物材質或食物口感特別敏感",
-"在吵雜、混亂或人多的環境中容易過載",
-"需要靠固定習慣或固定空間來維持安全感",
-"長時間社交後，會出現明顯疲憊、關機或情緒耗竭",
-"從小到大常覺得自己和多數人的感受方式不太一樣",
-"為了融入他人，常刻意模仿、壓抑或演出合群反應",
-"明明能完成事情，但過程中需要消耗大量心理能量"
-];
-
-function createRows(list, startId, targetId){
-    const target = document.getElementById(targetId);
-    let html = "";
-    list.forEach((q,index)=>{
-        const number = startId + index;
-        html += "<tr>";
-        html += `<td>${number}. ${q}</td>`;
-        for(let i=0;i<=3;i++){
-            html += `<td style="text-align:center;">
-                <input type="radio" name="q${number}" value="${i}">
-            </td>`;
-        }
-        html += "</tr>";
-    });
-    target.innerHTML = html;
-}
-
-createRows(questions1,1,"section1");
-createRows(questions2,8,"section2");
-createRows(questions3,15,"section3");
-
 function calculateScore(){
     let total = 0;
     let answered = 0;
 
     for(let i=1;i<=21;i++){
-        const radios = document.getElementsByName("q"+i);
+        let radios = document.getElementsByName("q"+i);
         for(let r of radios){
             if(r.checked){
                 total += parseInt(r.value);
@@ -235,8 +233,8 @@ function calculateScore(){
 
     if(answered < 21){
         document.getElementById("result").innerHTML = `
-            <h3>尚未完成</h3>
-            <p>目前已填寫 ${answered} / 21 題，請完成所有題目後再計算。</p>
+            <h3>提醒</h3>
+            <p>你還有題目尚未作答。請完成全部題目後再計算。</p>
         `;
         return;
     }
@@ -245,17 +243,20 @@ function calculateScore(){
 
     if(total <= 15){
         resultText = "目前檢核結果顯示，ASD 相關特徵不明顯。";
-    }else if(total <= 30){
-        resultText = "檢核結果顯示有部分 ASD 相關特徵，可進一步觀察其是否長期影響生活功能。";
-    }else if(total <= 45){
-        resultText = "檢核結果顯示 ASD 相關特徵較明顯，若在人際、學習、工作或生活適應上長期受影響，建議尋求專業評估。";
-    }else{
-        resultText = "檢核結果顯示 ASD 相關特徵相當明顯，建議進一步尋求專業人員進行完整評估。";
+    }
+    else if(total <= 30){
+        resultText = "檢核結果顯示有部分 ASD 相關特徵，可進一步觀察是否長期影響生活功能。";
+    }
+    else if(total <= 45){
+        resultText = "檢核結果顯示 ASD 相關特徵較明顯，若長期造成困擾，建議考慮專業評估。";
+    }
+    else{
+        resultText = "檢核結果偏高，若這些狀態從小持續存在，並明顯影響人際、生活或工作，建議尋求專業評估。";
     }
 
     document.getElementById("result").innerHTML = `
         <h3>檢核結果</h3>
-        <p><b>總分：</b>${total} 分</p>
+        <p><b>總分：</b> ${total} 分</p>
         <p>${resultText}</p>
     `;
 }
