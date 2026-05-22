@@ -1,155 +1,587 @@
-```html
-<!-- 把你原本 calculateScore() 裡面
-document.getElementById("result").innerHTML = html;
-前面的內容，全部換成下面這段 -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生活運作風格探索</title>
+
+<style>
+body{
+    font-family:"Microsoft JhengHei",sans-serif;
+    background:#f4f4f4;
+    margin:0;
+    padding:20px;
+    color:#222;
+    line-height:1.7;
+}
+.container{
+    max-width:1000px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+h1{text-align:center;}
+.note{
+    background:#fff7d6;
+    border-left:5px solid #e0b400;
+    padding:15px;
+    margin-bottom:25px;
+    border-radius:8px;
+}
+h2{
+    margin-top:40px;
+    border-bottom:2px solid #ddd;
+    padding-bottom:8px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+    margin-bottom:30px;
+}
+th,td{
+    border:1px solid #ddd;
+    padding:12px;
+    vertical-align:top;
+}
+th{background:#f0f0f0;}
+tr:nth-child(even){background:#fafafa;}
+.question{width:55%;}
+.score{text-align:center;width:9%;}
+.result-box{
+    background:#eef7ff;
+    padding:20px;
+    border-radius:12px;
+    margin-top:20px;
+}
+button{
+    background:#2c6bed;
+    color:white;
+    border:none;
+    padding:14px 24px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    margin-top:12px;
+    margin-right:8px;
+}
+button:hover{background:#1f54c2;}
+.secondary{background:#666;}
+.secondary:hover{background:#444;}
+.danger{background:#b64545;}
+.danger:hover{background:#8f3030;}
+.back{margin-top:30px;}
+.back a{
+    color:#2c6bed;
+    text-decoration:none;
+}
+.footer{
+    margin-top:40px;
+    font-size:14px;
+    color:#666;
+}
+.radar-wrap{
+    text-align:center;
+    margin-top:25px;
+}
+@media(max-width:768px){
+    table{font-size:14px;}
+    .container{padding:20px;}
+    button{
+        width:100%;
+        margin-right:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>生活運作風格探索</h1>
+
+<div class="note">
+<b>提醒：</b><br>
+這不是正式心理測驗，也不是診斷工具。<br>
+這份工具主要協助你觀察自己的生活節奏、社交能量、情緒敏感度、探索傾向與執行方式。<br>
+結果僅供自我理解與討論參考。
+</div>
+
+<p>請依照自己長期以來的狀況評分：</p>
+
+<ul>
+<li>0 分＝幾乎沒有</li>
+<li>1 分＝偶爾</li>
+<li>2 分＝經常</li>
+<li>3 分＝幾乎總是</li>
+</ul>
 
 <script>
+const sections = [
+{
+    key:"social",
+    title:"社交能量",
+    questions:[
+        "長時間與人互動後，我需要一段時間安靜下來",
+        "比起多人聚會，我更喜歡一對一或少數人的互動",
+        "太多人同時說話，會讓我感到疲累或混亂",
+        "我會因為社交安排太多而感到被消耗",
+        "即使我喜歡對方，也可能因為互動太久而需要休息"
+    ]
+},
+{
+    key:"structure",
+    title:"結構與秩序",
+    questions:[
+        "我喜歡事情有大致規劃，而不是完全即興",
+        "行程或計畫突然改變時，我容易煩躁或不安",
+        "我習慣建立自己的固定流程或做事順序",
+        "環境太混亂時，我的效率或情緒會受到影響",
+        "我需要一定程度的可預測感，才比較能穩定運作"
+    ]
+},
+{
+    key:"emotion",
+    title:"情緒波動與敏感度",
+    questions:[
+        "別人的一句話，可能讓我反覆想很久",
+        "我很容易感受到別人的情緒或氣氛變化",
+        "衝突或尷尬事件後，我很難快速恢復",
+        "我常因為小事產生比預期更強的情緒反應",
+        "我需要時間整理自己的感受，才能真正放下某件事"
+    ]
+},
+{
+    key:"explore",
+    title:"探索與好奇",
+    questions:[
+        "我常突然對某個主題、作品或想法非常投入",
+        "我喜歡研究有趣但不一定實用的事情",
+        "我容易開始新的興趣或計畫",
+        "我對新觀點、新工具或新方法有高度好奇",
+        "我常把不同領域的東西連結在一起思考"
+    ]
+},
+{
+    key:"action",
+    title:"行動與執行節奏",
+    questions:[
+        "我常知道該做什麼，但很難開始",
+        "我的效率很看當下狀態，時好時壞",
+        "我有時會突然爆衝式完成很多事情",
+        "我容易拖到最後一刻才開始行動",
+        "我需要外部期限、提醒或壓力，才比較容易動起來"
+    ]
+}
+];
 
-function getRadarData(scores){
+let questionNumber = 1;
 
-    return `
-    <div style="margin-top:30px;text-align:center;">
+function createSection(sectionIndex){
+    let section = sections[sectionIndex];
 
-    <svg width="320" height="320" viewBox="0 0 320 320">
+    document.write(`<h2>${sectionIndex + 1}、${section.title}</h2>`);
+    document.write(`
+        <table>
+        <tr>
+            <th class="question">題目</th>
+            <th class="score">0</th>
+            <th class="score">1</th>
+            <th class="score">2</th>
+            <th class="score">3</th>
+        </tr>
+    `);
 
-        <!-- 背景 -->
+    section.questions.forEach((q)=>{
+        let id = questionNumber;
+        document.write("<tr>");
+        document.write(`<td>${id}. ${q}</td>`);
+        for(let i=0;i<=3;i++){
+            document.write(`
+                <td style="text-align:center;">
+                    <input type="radio" name="q${id}" value="${i}">
+                </td>
+            `);
+        }
+        document.write("</tr>");
+        questionNumber++;
+    });
 
-        <polygon points="160,40 270,110 235,250 85,250 50,110"
-                 fill="#eef4ff"
-                 stroke="#d0d8e8"
-                 stroke-width="2"/>
+    document.write("</table>");
+}
+</script>
 
-        <polygon points="160,70 240,120 215,225 105,225 80,120"
-                 fill="none"
-                 stroke="#d0d8e8"
-                 stroke-width="1"/>
+<script>
+createSection(0);
+createSection(1);
+createSection(2);
+createSection(3);
+createSection(4);
+</script>
 
-        <polygon points="160,100 210,130 195,200 125,200 110,130"
-                 fill="none"
-                 stroke="#d0d8e8"
-                 stroke-width="1"/>
+<button onclick="calculateScore()">計算結果</button>
+<button class="secondary" onclick="showLastResult()">查看上次結果</button>
+<button class="secondary" onclick="downloadResult()">下載本次結果</button>
+<button class="danger" onclick="clearLastResult()">清除紀錄</button>
 
-        <!-- 軸線 -->
+<div class="result-box" id="result">
+尚未計算。
+</div>
 
-        <line x1="160" y1="160" x2="160" y2="40" stroke="#aaa"/>
-        <line x1="160" y1="160" x2="270" y2="110" stroke="#aaa"/>
-        <line x1="160" y1="160" x2="235" y2="250" stroke="#aaa"/>
-        <line x1="160" y1="160" x2="85" y2="250" stroke="#aaa"/>
-        <line x1="160" y1="160" x2="50" y2="110" stroke="#aaa"/>
+<div class="back">
+<a href="index.html">← 回到主頁</a>
+</div>
 
-        <!-- 雷達圖 -->
+<div class="footer">
+<b>提醒：</b><br>
+這份工具不是用來判斷「你是哪一種人」，而是協助你看見自己的生活運作傾向。<br>
+分數高不代表好或壞，只代表這個面向在你的生活中比較明顯。
+</div>
 
-        <polygon
-        points="
-        ${160},${160 - scores.explore*7}
-        ${160 + scores.structure*6},${160 - scores.structure*3}
-        ${160 + scores.action*4},${160 + scores.action*5}
-        ${160 - scores.social*4},${160 + scores.social*5}
-        ${160 - scores.emotion*6},${160 - scores.emotion*3}
-        "
-        fill="rgba(44,107,237,0.35)"
-        stroke="#2c6bed"
-        stroke-width="3"
-        />
+</div>
 
-        <!-- 文字 -->
+<script>
+let currentPlainResult = "";
 
-        <text x="145" y="25" font-size="16">探索</text>
-        <text x="278" y="110" font-size="16">結構</text>
-        <text x="235" y="275" font-size="16">行動</text>
-        <text x="45" y="275" font-size="16">社交</text>
-        <text x="5" y="110" font-size="16">情緒</text>
+function getLevel(score){
+    if(score <= 4) return "偏低";
+    if(score <= 8) return "中等";
+    if(score <= 11) return "偏高";
+    return "很高";
+}
 
-    </svg>
+function getDescription(key, score){
+    const level = getLevel(score);
 
-    </div>
-    `;
+    const descriptions = {
+        social:{
+            "偏低":"你在人際互動後通常不太容易被消耗，社交可能對你來說較自然或恢復速度較快。",
+            "中等":"你可以社交，也需要休息。你可能會依對象、情境與疲勞程度而改變社交狀態。",
+            "偏高":"你在人際互動後較容易耗能，適合保留獨處時間，避免連續過量社交。",
+            "很高":"你對社交能量的消耗非常敏感。即使你能互動，也需要明確安排恢復時間。"
+        },
+        structure:{
+            "偏低":"你對變動與即興的接受度較高，不一定需要很明確的流程才能行動。",
+            "中等":"你可以接受變化，但仍需要基本方向或大致安排來維持穩定。",
+            "偏高":"你對結構、流程與可預測感有明顯需求。突然變動可能會影響你的情緒或效率。",
+            "很高":"穩定流程對你很重要。若環境與安排過度混亂，你可能會明顯耗能或失去節奏。"
+        },
+        emotion:{
+            "偏低":"你通常不太容易被情緒或他人反應長時間影響，恢復速度較快。",
+            "中等":"你會受到情緒與氣氛影響，但多數時候仍能慢慢整理回來。",
+            "偏高":"你對情緒、語氣與人際氣氛較敏感，事件過後可能需要較長時間消化。",
+            "很高":"你的情緒感受與殘留時間很明顯。你可能需要穩定的整理方式，避免長期內耗。"
+        },
+        explore:{
+            "偏低":"你對新事物的投入較穩定，通常不會頻繁跳入新的興趣或主題。",
+            "中等":"你有一定好奇心，也能在新鮮感與穩定生活之間取得平衡。",
+            "偏高":"你對新資訊、創作與主題探索有明顯興趣，容易進入深挖狀態。",
+            "很高":"你的探索能量很強，常會把不同領域連結起來。這是優勢，也可能讓你分心或過度燃燒。"
+        },
+        action:{
+            "偏低":"你的行動節奏相對穩定，較少明顯啟動困難或爆衝式工作。",
+            "中等":"你的執行力會受狀態影響，但大多仍能在需要時完成事情。",
+            "偏高":"你可能常在拖延、爆衝與疲累之間擺盪。外部期限與提醒對你有幫助。",
+            "很高":"你的行動節奏波動明顯。你可能不是不努力，而是啟動與維持節奏需要更多結構支持。"
+        }
+    };
+
+    return descriptions[key][level];
 }
 
 function getOverallComment(scores){
-
     let social = scores.social;
     let structure = scores.structure;
     let emotion = scores.emotion;
     let explore = scores.explore;
     let action = scores.action;
 
-    if(explore >= 10 && emotion >= 10){
-
+    if(explore >= 10 && emotion >= 10 && action >= 10){
         return `
-        <h3>高探索 × 高敏感型</h3>
-
+        <h3>綜合風格：高探索 × 高敏感 × 行動波動型</h3>
         <p>
-        你對世界保持高度好奇，也容易深入投入感興趣的主題。<br>
+        你對世界保持高度好奇，容易被有趣的主題、想法或創作點燃。
+        但你的情緒感受與行動節奏也較容易波動。
+        </p>
+        <p>
+        你可能不是缺乏能力，而是需要找到「能啟動、能收束、能恢復」的節奏。
+        對你來說，把靈感整理成小步驟，比要求自己穩定燃燒更重要。
+        </p>
+        `;
+    }
+
+    if(explore >= 10 && emotion >= 10){
+        return `
+        <h3>綜合風格：高探索 × 高敏感型</h3>
+        <p>
+        你對世界保持高度好奇，也容易深入投入感興趣的主題。
         但同時，你對情緒、氣氛與環境變化的感受也比較深。
         </p>
-
         <p>
-        你可能不是不想接觸世界，
-        而是世界進入你的速度太快。
-        </p>
-
-        <p>
-        對你而言，
-        保留恢復空間與自己的節奏非常重要。
+        你可能不是不想接觸世界，而是世界進入你的速度太快。
+        保留恢復空間與自己的節奏，對你來說非常重要。
         </p>
         `;
     }
 
     if(structure >= 10 && social >= 10){
-
         return `
-        <h3>穩定節奏型</h3>
-
+        <h3>綜合風格：穩定節奏型</h3>
         <p>
-        你比較需要穩定、可預測與低干擾的生活節奏。<br>
-        過度混亂的人際或環境，
-        容易讓你快速耗能。
+        你比較需要穩定、可預測與低干擾的生活節奏。
+        過度混亂的人際或環境，容易讓你快速耗能。
         </p>
-
         <p>
-        當你擁有自己的節奏與空間時，
-        通常能運作得很好。
+        當你擁有自己的節奏與空間時，通常能運作得比較好。
         </p>
         `;
     }
 
     if(action >= 10 && explore >= 10){
-
         return `
-        <h3>高動能 × 靈感波動型</h3>
-
+        <h3>綜合風格：高動能 × 靈感波動型</h3>
         <p>
-        你可能會突然高度投入某些事情，
-        爆發出很強的行動力與創造力。
+        你可能會突然高度投入某些事情，爆發出很強的行動力與創造力。
+        但同時，你的節奏也容易受到情緒、興趣與環境影響。
         </p>
-
         <p>
-        但同時，
-        你的節奏也容易受到情緒、興趣與環境影響。
+        建立「能開始的小步驟」，對你比逼迫自己穩定更重要。
         </p>
+        `;
+    }
 
+    if(social >= 10 && emotion >= 10){
+        return `
+        <h3>綜合風格：人際耗能 × 情緒敏感型</h3>
         <p>
-        建立「能開始的小步驟」，
-        對你比逼迫自己穩定更重要。
+        你對人際互動與情緒氣氛可能相當敏感。
+        你不一定不喜歡人，但長時間互動容易消耗你。
+        </p>
+        <p>
+        適度保留安靜時間、降低高衝突環境，會讓你的生活品質更穩。
         </p>
         `;
     }
 
     return `
-    <h3>平衡觀察型</h3>
-
+    <h3>綜合風格：平衡觀察型</h3>
     <p>
     你的結果並沒有明顯集中在單一方向，
     而是依情境、壓力與生活狀態而變動。
     </p>
-
     <p>
-    你可能是一個會持續觀察自己、
-    並慢慢調整生活節奏的人。
+    你可能是一個會持續觀察自己，並慢慢調整生活節奏的人。
     </p>
     `;
 }
 
+function getRadarChart(scores){
+    const max = 15;
+    const centerX = 160;
+    const centerY = 160;
+    const radius = 110;
+
+    const items = [
+        {key:"explore", label:"探索", angle:-90},
+        {key:"structure", label:"結構", angle:-18},
+        {key:"action", label:"行動", angle:54},
+        {key:"social", label:"社交", angle:126},
+        {key:"emotion", label:"情緒", angle:198}
+    ];
+
+    function point(angleDeg, value){
+        const angle = angleDeg * Math.PI / 180;
+        const r = radius * (value / max);
+        return {
+            x:centerX + r * Math.cos(angle),
+            y:centerY + r * Math.sin(angle)
+        };
+    }
+
+    function outerPoint(angleDeg, r){
+        const angle = angleDeg * Math.PI / 180;
+        return {
+            x:centerX + r * Math.cos(angle),
+            y:centerY + r * Math.sin(angle)
+        };
+    }
+
+    let dataPoints = items.map(item=>{
+        const p = point(item.angle, scores[item.key]);
+        return `${p.x},${p.y}`;
+    }).join(" ");
+
+    let grid = "";
+    [0.33,0.66,1].forEach(scale=>{
+        let points = items.map(item=>{
+            const p = outerPoint(item.angle, radius * scale);
+            return `${p.x},${p.y}`;
+        }).join(" ");
+        grid += `<polygon points="${points}" fill="none" stroke="#d0d8e8" stroke-width="1"/>`;
+    });
+
+    let axes = "";
+    items.forEach(item=>{
+        const p = outerPoint(item.angle, radius);
+        axes += `<line x1="${centerX}" y1="${centerY}" x2="${p.x}" y2="${p.y}" stroke="#ccc"/>`;
+    });
+
+    let labels = "";
+    items.forEach(item=>{
+        const p = outerPoint(item.angle, radius + 28);
+        labels += `<text x="${p.x}" y="${p.y}" text-anchor="middle" dominant-baseline="middle" font-size="15">${item.label}</text>`;
+    });
+
+    return `
+    <div class="radar-wrap">
+        <h3>生活運作雷達圖</h3>
+        <svg width="320" height="320" viewBox="0 0 320 320">
+            ${grid}
+            ${axes}
+            <polygon points="${dataPoints}"
+                fill="rgba(44,107,237,0.35)"
+                stroke="#2c6bed"
+                stroke-width="3"/>
+            ${labels}
+        </svg>
+    </div>
+    `;
+}
+
+function calculateScore(){
+    let totalQuestions = 25;
+    let answered = 0;
+    let scores = {
+        social:0,
+        structure:0,
+        emotion:0,
+        explore:0,
+        action:0
+    };
+
+    for(let i=1;i<=totalQuestions;i++){
+        let radios = document.getElementsByName("q"+i);
+        for(let r of radios){
+            if(r.checked){
+                let value = parseInt(r.value);
+                answered++;
+
+                if(i <= 5) scores.social += value;
+                else if(i <= 10) scores.structure += value;
+                else if(i <= 15) scores.emotion += value;
+                else if(i <= 20) scores.explore += value;
+                else scores.action += value;
+            }
+        }
+    }
+
+    if(answered < totalQuestions){
+        document.getElementById("result").innerHTML = `
+            <h3>提醒</h3>
+            <p>你還有題目尚未作答。請完成全部題目後再計算。</p>
+        `;
+        return;
+    }
+
+    let time = new Date().toLocaleString();
+
+    let html = `
+        <h3>生活運作風格結果</h3>
+        <p><b>測驗時間：</b>${time}</p>
+        <hr>
+    `;
+
+    let text = `生活運作風格探索結果\n\n測驗時間：${time}\n\n`;
+
+    sections.forEach(section=>{
+        let score = scores[section.key];
+        let level = getLevel(score);
+        let desc = getDescription(section.key, score);
+
+        html += `
+            <h4>${section.title}：${score} 分（${level}）</h4>
+            <p>${desc}</p>
+        `;
+
+        text += `${section.title}：${score} 分（${level}）\n${desc}\n\n`;
+    });
+
+    html += `
+        <hr style="margin:30px 0;">
+        ${getRadarChart(scores)}
+        <hr style="margin:30px 0;">
+        ${getOverallComment(scores)}
+        <hr style="margin:30px 0;">
+        <p>
+        <b>總結：</b><br>
+        這份結果不是人格分類，而是協助你觀察自己在生活中的耗能、穩定、探索與行動模式。
+        </p>
+    `;
+
+    text += "綜合評價：\n";
+    text += getOverallComment(scores).replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();
+    text += "\n\n總結：這份結果不是人格分類，而是協助你觀察自己在生活中的耗能、穩定、探索與行動模式。\n";
+
+    currentPlainResult = text;
+
+    document.getElementById("result").innerHTML = html;
+
+    localStorage.setItem("life_style_last_result_html", html);
+    localStorage.setItem("life_style_last_result_text", text);
+    localStorage.setItem("life_style_last_time", time);
+}
+
+function showLastResult(){
+    let lastResult = localStorage.getItem("life_style_last_result_html");
+
+    if(!lastResult){
+        document.getElementById("result").innerHTML = `
+            <h3>尚無紀錄</h3>
+            <p>目前沒有儲存的上次結果。</p>
+        `;
+        return;
+    }
+
+    document.getElementById("result").innerHTML = `
+        <h3>上次儲存結果</h3>
+        ${lastResult}
+    `;
+}
+
+function downloadResult(){
+    let resultText = currentPlainResult || localStorage.getItem("life_style_last_result_text");
+
+    if(!resultText){
+        alert("請先完成測驗並計算結果。");
+        return;
+    }
+
+    let blob = new Blob([resultText], {type:"text/plain;charset=utf-8"});
+    let link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+    link.download = "生活運作風格探索結果.txt";
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+}
+
+function clearLastResult(){
+    localStorage.removeItem("life_style_last_result_html");
+    localStorage.removeItem("life_style_last_result_text");
+    localStorage.removeItem("life_style_last_time");
+
+    currentPlainResult = "";
+
+    document.getElementById("result").innerHTML = `
+        <h3>已清除</h3>
+        <p>上次結果已清除。</p>
+    `;
+}
 </script>
-```
+
+</body>
+</html>
