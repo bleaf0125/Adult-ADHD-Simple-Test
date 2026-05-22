@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手機使用特質微檢測：探索你的數位安全感與多巴胺機制</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Comfortaa:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            cream: '#FCFAF7',
+                            dark: '#2D3748',
+                            sage: '#8FA89B',
+                            lavender: '#A393B1',
+                            peach: '#E8A7A1',
+                            amber: '#E29B56'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                        comfortaa: ['Comfortaa', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F4F0EA;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .custom-shadow {
+            box-shadow: 0 10px 30px -5px rgba(143, 168, 155, 0.2);
+        }
+        /* 隱藏原生單選鈕，改用精美卡片樣式 */
+        .option-card input[type="radio"] {
+            display: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-brand-dark flex flex-col justify-between">
+
+    <!-- 頁首導覽 -->
+    <header class="w-full max-w-4xl mx-auto px-6 py-6 flex justify-between items-center border-b border-gray-200">
+        <a href="https://bleaf0125.github.io/Adult-ADHD-ASD-and-Something/" target="_blank" class="flex items-center gap-2 text-brand-sage hover:text-brand-dark transition-colors">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="text-sm font-medium">返回「成人ADHD/ASD的碎碎念」</span>
+        </a>
+        <div class="text-xs text-gray-400 font-mono">Ver 1.0 • 以特質適應世界</div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl bg-brand-cream rounded-3xl p-8 md:p-12 custom-shadow border border-[#EBE5DB]">
+            
+            <!-- 1. 歡迎/登入畫面 -->
+            <div id="intro-section" class="space-y-8">
+                <div class="space-y-4 text-center md:text-left">
+                    <span class="inline-block bg-brand-sage/20 text-brand-sage text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        # 使用魔法適應魔法
+                    </span>
+                    <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-brand-dark leading-snug">
+                        手機依賴微檢測：<br>
+                        <span class="text-brand-sage">探索你的數位安全感與多巴胺機制</span>
+                    </h1>
+                    <p class="text-gray-600 leading-relaxed text-base">
+                        你是否也常看著螢幕發呆、整天滑著手機，卻又為此感到自責？<br>
+                        其實，對於神經多樣性特質（如 ADHD / ASD）的人而言，手機往往不只是玩具，而是大腦在面對感官超載、社交疲憊或現實挫折時，主動尋求的<strong>「數位自適應工具」</strong>。
+                    </p>
+                </div>
+
+                <div class="bg-white/60 rounded-2xl p-6 border border-gray-100 space-y-4">
+                    <h3 class="font-bold text-brand-dark flex items-center gap-2 text-lg">
+                        <i class="fa-solid fa-compass text-brand-sage"></i> 檢測說明
+                    </h3>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-brand-sage mt-1"></i>
+                            <span>本檢測共 <strong>18 題</strong>，預計花費 3 分鐘。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-brand-sage mt-1"></i>
+                            <span>我們不貼「成癮」的負面標籤，而是幫你拆解手機背後的<strong>心理與生理代償機制</strong>。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-brand-sage mt-1"></i>
+                            <span>做完後，你將獲得一份<strong>專屬調適指南（魔法策略）</strong>，用符合特質的方法重新拿回生活掌控權。</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="text-center">
+                    <button id="btn-start" class="w-full md:w-auto bg-brand-sage hover:bg-brand-sage/90 text-white font-bold px-8 py-4 rounded-2xl transition-all shadow-lg shadow-brand-sage/20 text-lg">
+                        開始探索我的手機特質 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. 問卷答題畫面 -->
+            <div id="quiz-section" class="hidden space-y-8">
+                <!-- 進度條 -->
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-medium text-gray-500">
+                        <span>進度：<span id="current-question-num">1</span> / 18</span>
+                        <span id="progress-percentage">5%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="bg-brand-sage h-full transition-all duration-300" style="width: 5.55%"></div>
+                    </div>
+                </div>
+
+                <!-- 題目顯示區 -->
+                <div id="question-container" class="space-y-6">
+                    <span id="question-category" class="inline-block bg-brand-lavender/20 text-brand-lavender text-xs font-bold px-3 py-1 rounded-full">
+                        感官屏蔽與代償
+                    </span>
+                    <h2 id="question-text" class="text-xl md:text-2xl font-bold text-brand-dark leading-relaxed">
+                        當我在現實中與人溝通感到疲憊、卡住或焦慮時，我會立刻打開手機。
+                    </h2>
+                    
+                    <!-- 選項按鈕組 -->
+                    <div class="space-y-3" id="options-group">
+                        <label class="option-card flex items-center justify-between p-4 bg-white hover:bg-brand-cream border border-gray-200 rounded-2xl cursor-pointer transition-all hover:border-brand-sage">
+                            <input type="radio" name="score" value="1">
+                            <span class="text-base font-medium text-gray-700">從不如此</span>
+                            <span class="score-badge text-xs bg-gray-100 text-gray-400 px-2 py-1 rounded-md">1分</span>
+                        </label>
+                        <label class="option-card flex items-center justify-between p-4 bg-white hover:bg-brand-cream border border-gray-200 rounded-2xl cursor-pointer transition-all hover:border-brand-sage">
+                            <input type="radio" name="score" value="2">
+                            <span class="text-base font-medium text-gray-700">很少如此</span>
+                            <span class="score-badge text-xs bg-gray-100 text-gray-400 px-2 py-1 rounded-md">2分</span>
+                        </label>
+                        <label class="option-card flex items-center justify-between p-4 bg-white hover:bg-brand-cream border border-gray-200 rounded-2xl cursor-pointer transition-all hover:border-brand-sage">
+                            <input type="radio" name="score" value="3">
+                            <span class="text-base font-medium text-gray-700">有時如此</span>
+                            <span class="score-badge text-xs bg-gray-100 text-gray-400 px-2 py-1 rounded-md">3分</span>
+                        </label>
+                        <label class="option-card flex items-center justify-between p-4 bg-white hover:bg-brand-cream border border-gray-200 rounded-2xl cursor-pointer transition-all hover:border-brand-sage">
+                            <input type="radio" name="score" value="4">
+                            <span class="text-base font-medium text-gray-700">經常如此</span>
+                            <span class="score-badge text-xs bg-gray-100 text-gray-400 px-2 py-1 rounded-md">4分</span>
+                        </label>
+                        <label class="option-card flex items-center justify-between p-4 bg-white hover:bg-brand-cream border border-gray-200 rounded-2xl cursor-pointer transition-all hover:border-brand-sage">
+                            <input type="radio" name="score" value="5">
+                            <span class="text-base font-medium text-gray-700">總是如此</span>
+                            <span class="score-badge text-xs bg-gray-100 text-gray-400 px-2 py-1 rounded-md">5分</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 上一題 / 下一題 控制區 -->
+                <div class="flex justify-between items-center pt-4">
+                    <button id="btn-prev" class="invisible text-gray-500 hover:text-brand-dark transition-colors flex items-center gap-1 text-sm font-medium">
+                        <i class="fa-solid fa-chevron-left"></i> 上一題
+                    </button>
+                    <span class="text-xs text-gray-400">請選擇符合你直覺的選項</span>
+                </div>
+            </div>
+
+            <!-- 3. 檢測結果畫面 -->
+            <div id="result-section" class="hidden space-y-8">
+                
+                <!-- 結果標題 -->
+                <div class="text-center space-y-3">
+                    <span class="bg-brand-sage/20 text-brand-sage text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        檢測分析報告
+                    </span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark">你的手機依賴類型是</h2>
+                    <p id="result-type-title" class="text-3xl font-black text-brand-sage tracking-wide">
+                        多巴胺獵人型
+                    </p>
+                    <div class="flex justify-center gap-2 text-sm text-gray-500">
+                        <span>總分：<strong id="result-total-score" class="text-brand-dark">0</strong> / 90</span>
+                        <span>•</span>
+                        <span id="result-level-text">中度共生</span>
+                    </div>
+                </div>
+
+                <!-- 數據視覺化比例圖 -->
+                <div class="space-y-4 bg-white/60 p-6 rounded-2xl border border-gray-100">
+                    <h4 class="font-bold text-sm text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-chart-bar"></i> 三大特質維度解析
+                    </h4>
+                    
+                    <div class="space-y-4">
+                        <!-- 維度 A -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="font-medium flex items-center gap-1">
+                                    <i class="fa-solid fa-shield-halved text-brand-peach"></i> 現實避難所 (Reality Refuge)
+                                </span>
+                                <span id="score-refuge" class="font-bold text-brand-peach">12/30</span>
+                            </div>
+                            <div class="w-full bg-gray-150 h-3 rounded-full overflow-hidden">
+                                <div id="bar-refuge" class="bg-brand-peach h-full rounded-full transition-all duration-500" style="width: 40%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 維度 B -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="font-medium flex items-center gap-1">
+                                    <i class="fa-solid fa-bolt text-brand-amber"></i> 多巴胺獵人 (Dopamine Hunter)
+                                </span>
+                                <span id="score-hunter" class="font-bold text-brand-amber">25/30</span>
+                            </div>
+                            <div class="w-full bg-gray-150 h-3 rounded-full overflow-hidden">
+                                <div id="bar-hunter" class="bg-brand-amber h-full rounded-full transition-all duration-500" style="width: 83%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 維度 C -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="font-medium flex items-center gap-1">
+                                    <i class="fa-solid fa-mask text-brand-lavender"></i> 感官社交換氣艙 (Sensory Pod)
+                                </span>
+                                <span id="score-pod" class="font-bold text-brand-lavender">18/30</span>
+                            </div>
+                            <div class="w-full bg-gray-150 h-3 rounded-full overflow-hidden">
+                                <div id="bar-pod" class="bg-brand-lavender h-full rounded-full transition-all duration-500" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 綜合評估報告 (動態渲染) -->
+                <div class="space-y-6">
+                    <div class="border-l-4 border-brand-sage pl-4 py-1">
+                        <h3 class="font-bold text-lg text-brand-dark">溫柔的特質理解與評估</h3>
+                    </div>
+                    <p id="result-description" class="text-gray-600 leading-relaxed text-base">
+                        這是一段溫柔的評估文字，分析為什麼你的大腦會這樣跟手機相處。
+                    </p>
+
+                    <!-- 客製化調適魔法指南 -->
+                    <div id="magic-strategies-box" class="bg-brand-sage/10 rounded-2xl p-6 border border-brand-sage/20 space-y-4">
+                        <h4 class="font-bold text-brand-sage flex items-center gap-2 text-lg">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> 魔法適應魔法：專屬調適策略
+                        </h4>
+                        <div id="magic-strategies-content" class="space-y-3 text-sm text-gray-700 leading-relaxed">
+                            <!-- 動態注入調適策略 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部操作區 -->
+                <div class="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+                    <button id="btn-copy-result" class="bg-brand-dark hover:bg-brand-dark/95 text-white font-bold px-6 py-3 rounded-xl transition-all text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-copy"></i> 複製分析報告
+                    </button>
+                    <button id="btn-restart" class="border border-gray-300 hover:bg-gray-100 text-gray-600 font-bold px-6 py-3 rounded-xl transition-all text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-left"></i> 重新檢測
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 頁尾宣告 -->
+    <footer class="w-full max-w-4xl mx-auto px-6 py-8 text-center text-xs text-gray-400 space-y-2 border-t border-gray-200">
+        <p>© 2026 成人 ADHD / ASD 的碎碎念 - 手機使用特質探索量表</p>
+        <p>本量表僅作特質探索與自我覺察使用，非醫療臨床診斷。大腦的運作沒有標準答案，找到最適合自己的適應姿態才是最重要的魔法。</p>
+    </footer>
+
+    <!-- JS 邏輯處理 -->
+    <script>
+        // 題目資料庫
+        const questions = [
+            {
+                id: 1,
+                category: "現實避難所 (Reality Refuge)",
+                categoryType: "refuge",
+                badgeClass: "bg-brand-peach/20 text-brand-peach",
+                text: "當我在現實中與人溝通感到疲憊、卡住或焦慮時，我會立刻打開手機。"
+            },
+            {
+                id: 2,
+                category: "現實避難所 (Reality Refuge)",
+                categoryType: "refuge",
+                badgeClass: "bg-brand-peach/20 text-brand-peach",
+                text: "面對需要耗費大量腦力的複雜工作或功課時，我的手會像有磁鐵一樣自動伸向手機。"
+            },
+            {
+                id: 3,
+                category: "現實避難所 (Reality Refuge)",
+                categoryType: "refuge",
+                badgeClass: "bg-brand-peach/20 text-brand-peach",
+                text: "在一個讓我感到不安、尷尬或陌生的環境中，滑手機可以讓我「看起來有事做」，提供安全感。"
+            },
+            {
+                id: 4,
+                category: "現實避難所 (Reality Refuge)",
+                categoryType: "refuge",
+                badgeClass: "bg-brand-peach/20 text-brand-peach",
+                text: "經歷了一整天高強度的感官或社交超載（Overload）後，滑手機是我放鬆、讓大腦暫時「離線」的方法。"
+            },
+            {
+                id: 5,
+                category: "現實避難所 (Reality Refuge)",
+                categoryType: "refuge",
+                badgeClass: "bg-brand-peach/20 text-brand-peach",
+                text: "相比於現實世界的不可預測，手機世界（如特定的文章、影片、小遊戲）的規則與結果更讓我感到安心。"
+            },
+            {
+                id: 6,
+                category: "現實避難所 (Reality Refuge)",
+                categoryType: "refuge",
+                badgeClass: "bg-brand-peach/20 text-brand-peach",
+                text: "當我覺得挫折、被誤解，或者事情做不好的時候，我會立刻想躲進手機的世界裡。"
+            },
+            {
+                id: 7,
+                category: "多巴胺獵人 (Dopamine Hunter)",
+                categoryType: "hunter",
+                badgeClass: "bg-brand-amber/20 text-brand-amber",
+                text: "我常常只是想看個時間或查個資料，回過神來已經滑了半小時短影音或社群軟體。"
+            },
+            {
+                id: 8,
+                category: "多巴胺獵人 (Dopamine Hunter)",
+                categoryType: "hunter",
+                badgeClass: "bg-brand-amber/20 text-brand-amber",
+                text: "手機一跳出通知（震動或紅點），如果不立刻點開，我會覺得心癢難耐、無法專注於眼前的事情。"
+            },
+            {
+                id: 9,
+                category: "多巴胺獵人 (Dopamine Hunter)",
+                categoryType: "hunter",
+                badgeClass: "bg-brand-amber/20 text-brand-amber",
+                text: "當沒事做或眼前的事情不夠刺激時，大腦會湧現強烈的無聊與煩躁感，必須靠滑手機來「填補」這種飢渴。"
+            },
+            {
+                id: 10,
+                category: "多巴胺獵人 (Dopamine Hunter)",
+                categoryType: "hunter",
+                badgeClass: "bg-brand-amber/20 text-brand-amber",
+                text: "我常常同時打開好幾個App，在它們之間頻繁切換（一下看Threads、一下看YouTube、一下看IG），卻沒有一個真的看完。"
+            },
+            {
+                id: 11,
+                category: "多巴胺獵人 (Dopamine Hunter)",
+                categoryType: "hunter",
+                badgeClass: "bg-brand-amber/20 text-brand-amber",
+                text: "在睡前，我明明非常累也知道該睡了，但還是會不斷告訴自己「再看最後五分鐘」，結果滑到半夜。"
+            },
+            {
+                id: 12,
+                category: "多巴胺獵人 (Dopamine Hunter)",
+                categoryType: "hunter",
+                badgeClass: "bg-brand-amber/20 text-brand-amber",
+                text: "我容易被短影音、遊戲或社群通知的「即時反饋」所吸引，做需要長時間累積的事（如看書、寫計畫）對我極度痛苦。"
+            },
+            {
+                id: 13,
+                category: "感官社交換氣艙 (Sensory Pod)",
+                categoryType: "pod",
+                badgeClass: "bg-brand-lavender/20 text-brand-lavender",
+                text: "在網路上看我有興趣的特定主題，比和現實中的人閒聊更能讓我感到放鬆與靈魂共鳴。"
+            },
+            {
+                id: 14,
+                category: "感官社交換氣艙 (Sensory Pod)",
+                categoryType: "pod",
+                badgeClass: "bg-brand-lavender/20 text-brand-lavender",
+                text: "相比於面對面說話的即時壓力，我更喜歡用文字訊息溝通，因為這能讓我掌握互動的節奏和字句。"
+            },
+            {
+                id: 15,
+                category: "感官社交換氣艙 (Sensory Pod)",
+                categoryType: "pod",
+                badgeClass: "bg-brand-lavender/20 text-brand-lavender",
+                text: "當外界聲音、光線或環境太吵雜時，我會戴上耳機看手機，這能幫我建立一個安全、隔絕外界的感官防禦罩。"
+            },
+            {
+                id: 16,
+                category: "感官社交換氣艙 (Sensory Pod)",
+                categoryType: "pod",
+                badgeClass: "bg-brand-lavender/20 text-brand-lavender",
+                text: "當現實社交的「社交電力」歸零時，躲進手機世界是我恢復精力的安全路徑。"
+            },
+            {
+                id: 17,
+                category: "感官社交換氣艙 (Sensory Pod)",
+                categoryType: "pod",
+                badgeClass: "bg-brand-lavender/20 text-brand-lavender",
+                text: "有時候我根本沒在仔細看手機內容，只是一直漫無目的地重複滾動頁面，這動作能讓我混亂的思緒平復下來。"
+            },
+            {
+                id: 18,
+                category: "感官社交換氣艙 (Sensory Pod)",
+                categoryType: "pod",
+                badgeClass: "bg-brand-lavender/20 text-brand-lavender",
+                text: "在社交場合中，把注意力放在手機螢幕上，能大幅減輕我需要「偽裝社交（Masking）」的沉重壓力。"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let userAnswers = {}; // 儲存 { 題目ID: 分數 }
+
+        // DOM 元素選取
+        const introSection = document.getElementById('intro-section');
+        const quizSection = document.getElementById('quiz-section');
+        const resultSection = document.getElementById('result-section');
+        
+        const btnStart = document.getElementById('btn-start');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnRestart = document.getElementById('btn-restart');
+        const btnCopyResult = document.getElementById('btn-copy-result');
+
+        const currentQuestionNum = document.getElementById('current-question-num');
+        const progressPercentage = document.getElementById('progress-percentage');
+        const progressBar = document.getElementById('progress-bar');
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const optionsGroup = document.getElementById('options-group');
+
+        // 初始化
+        btnStart.addEventListener('click', startQuiz);
+        btnPrev.addEventListener('click', prevQuestion);
+        btnRestart.addEventListener('click', restartQuiz);
+        btnCopyResult.addEventListener('click', copyToClipboard);
+
+        // 開始檢測
+        function startQuiz() {
+            introSection.classList.add('hidden');
+            quizSection.classList.remove('hidden');
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            showQuestion(currentQuestionIndex);
+        }
+
+        // 顯示題目
+        function showQuestion(index) {
+            const q = questions[index];
+            
+            // 更新進度與基本資訊
+            currentQuestionNum.textContent = index + 1;
+            const pct = Math.round(((index + 1) / questions.length) * 100);
+            progressPercentage.textContent = pct + "%";
+            progressBar.style.width = pct + "%";
+
+            questionCategory.textContent = q.category;
+            // 套用顏色標記
+            questionCategory.className = `inline-block text-xs font-bold px-3 py-1 rounded-full ${q.badgeClass}`;
+            questionText.textContent = q.text;
+
+            // 處理「上一題」按鈕能見度
+            if (index > 0) {
+                btnPrev.classList.remove('invisible');
+            } else {
+                btnPrev.classList.add('invisible');
+            }
+
+            // 渲染單選鈕並綁定點擊事件
+            const radios = optionsGroup.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => {
+                radio.checked = false;
+                // 重設外觀
+                const card = radio.parentElement;
+                card.classList.remove('border-brand-sage', 'bg-brand-sage/5');
+                card.classList.add('border-gray-200', 'bg-white');
+
+                // 檢查是否之前答過此題，若有則恢復選取狀態
+                if (userAnswers[q.id] && radio.value == userAnswers[q.id]) {
+                    radio.checked = true;
+                    card.classList.remove('border-gray-200', 'bg-white');
+                    card.classList.add('border-brand-sage', 'bg-brand-sage/5');
+                }
+            });
+
+            // 重新選取新動態產生的卡片，並點擊時前進下一題
+            const optionCards = optionsGroup.querySelectorAll('.option-card');
+            optionCards.forEach(card => {
+                card.onclick = function() {
+                    const r = card.querySelector('input[type="radio"]');
+                    r.checked = true;
+                    userAnswers[q.id] = parseInt(r.value);
+
+                    // 視覺反饋
+                    optionCards.forEach(c => {
+                        c.classList.remove('border-brand-sage', 'bg-brand-sage/5');
+                        c.classList.add('border-gray-200', 'bg-white');
+                    });
+                    card.classList.remove('border-gray-200', 'bg-white');
+                    card.classList.add('border-brand-sage', 'bg-brand-sage/5');
+
+                    // 延遲 250ms 前進，提升互動感與體感流暢度
+                    setTimeout(() => {
+                        nextQuestion();
+                    }, 250);
+                }
+            });
+        }
+
+        // 前進下一題
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                calculateResults();
+            }
+        }
+
+        // 回到上一題
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        // 重新檢測
+        function restartQuiz() {
+            resultSection.classList.add('hidden');
+            startQuiz();
+        }
+
+        // 計算結果與渲染報告
+        function calculateResults() {
+            quizSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+
+            let totalScore = 0;
+            let refugeScore = 0; // A
+            let hunterScore = 0; // B
+            let podScore = 0;    // C
+
+            // 遍歷所有答案加總
+            questions.forEach(q => {
+                const ans = userAnswers[q.id] || 3; // 預防未答到的題目(通常不會發生)，以有時如此(3分)代償
+                totalScore += ans;
+                if (q.categoryType === 'refuge') refugeScore += ans;
+                if (q.categoryType === 'hunter') hunterScore += ans;
+                if (q.categoryType === 'pod') podScore += ans;
+            });
+
+            // 更新分數與百分比寬度顯示
+            document.getElementById('result-total-score').textContent = totalScore;
+            document.getElementById('score-refuge').textContent = refugeScore + "/30";
+            document.getElementById('score-hunter').textContent = hunterScore + "/30";
+            document.getElementById('score-pod').textContent = podScore + "/30";
+
+            document.getElementById('bar-refuge').style.width = ((refugeScore / 30) * 100) + "%";
+            document.getElementById('bar-hunter').style.width = ((hunterScore / 30) * 100) + "%";
+            document.getElementById('bar-pod').style.width = ((podScore / 30) * 100) + "%";
+
+            // 判斷共生嚴重度
+            let levelText = "輕度造訪者";
+            if (totalScore > 54) {
+                levelText = "深度數位共生者 (高度依賴)";
+            } else if (totalScore >= 36) {
+                levelText = "平衡調諧者 (中度依賴)";
+            } else {
+                levelText = "數位輕度造訪者 (低度依賴)";
+            }
+            document.getElementById('result-level-text').textContent = levelText;
+
+            // 判斷優勢維度並提供客製化解讀與調適魔法
+            let primaryType = "多巴胺獵人型";
+            let typeColorClass = "text-brand-amber";
+            let desc = "";
+            let strategiesHtml = "";
+
+            // 尋找最高分者
+            const maxVal = Math.max(refugeScore, hunterScore, podScore);
+
+            if (maxVal === refugeScore) {
+                primaryType = "現實避難所型 (Refuge Master)";
+                typeColorClass = "text-brand-peach";
+                desc = `手機對你而言，不是一個玩具，而是你的一座<strong>「數位心靈減壓艙」</strong>。<br><br>
+                        當現實世界的摩擦力（例如：高難度的代辦任務、累積的工作挫折、不被理解的無力感）過載時，你的神經系統會啟動自然的保護防衛。大腦為了防止你的心理系統全面當機，會指引你走向手機這個規則明確、反饋溫和且「保證不會傷害你」的避難港口。
+                        這並不是你的軟弱或自律不夠，而是你的神經系統在試圖維持脆弱的平衡。`;
+                strategiesHtml = `
+                    <div class="flex gap-2 items-start">
+                        <i class="fa-solid fa-hourglass-half text-brand-peach mt-1"></i>
+                        <p><strong>五分鐘「合法逃避」計時器：</strong>不需要對逃避滑手機感到罪惡。允許自己滑手機逃避！但前提是「主動設定5分鐘鬧鐘」。鬧鐘響起時，不強求自己直接完成大任務，只跟自己說「我只把工作文檔打開/或寫一行的字就好」，將啟動阻力（Friction）降到最低。</p>
+                    </div>
+                    <div class="flex gap-2 items-start">
+                        <i class="fa-solid fa-couch text-brand-peach mt-1"></i>
+                        <p><strong>建造實體「低摩擦減壓角」：</strong>在房間設置一個舒服、不需用腦的物理空間。放上毯子、抱枕或你喜歡的香氛、重力毯。當你感到壓力大想躲起來時，先走到這個物理減壓角，讓身體知道除了手機，現實生活也有安全溫柔的硬體避難所。</p>
+                    </div>
+                `;
+            } else if (maxVal === hunterScore) {
+                primaryType = "多巴胺遊俠/獵人型 (Dopamine Ranger)";
+                typeColorClass = "text-brand-amber";
+                desc = `你的大腦天生是一台<strong>「渴望新奇、高速運轉的多巴胺跑車」</strong>（通常非常符合 ADHD 特質）。<br><br>
+                        對於手機裡的短影音、即時通知（讚或紅點）、不斷更新的討論串，這種高頻、隨機的數位回饋機制，你的大腦接收器完全沒有抵抗力。一般人覺得無聊的空檔，在你大腦裡會放大成難以忍受的「精神焦慮與飢渴」，因此你會瘋狂按下螢幕尋求即時的多巴胺餵食，並在高度興奮中徹底失去對時間的感知。`;
+                strategiesHtml = `
+                    <div class="flex gap-2 items-start">
+                        <i class="fa-solid fa-utensils text-brand-amber mt-1"></i>
+                        <p><strong>設計你的「多巴胺菜單 (Dopamine Menu)」：</strong>當你在滑手機、想尋求刺激時，列出實體的健康前菜（如：大聲播一首你最愛的嗨歌跳舞2分鐘、做10個開合跳、泡一杯酸甜好喝的氣泡水）。用這類高刺激、短時間的實體活動，快速餵食大腦所需的多巴胺。</p>
+                    </div>
+                    <div class="flex gap-2 items-start">
+                        <i class="fa-solid fa-eye-slash text-brand-amber mt-1"></i>
+                        <p><strong>主動增加「數位摩擦力」：</strong>大腦在渴求刺激時是極端衝動的。請將成癮App移出首頁，改放到深層資料夾。更可以使用大絕招：<strong>將手機設定為「黑白螢幕模式」</strong>。失去五彩繽紛的多巴胺視覺包裝後，大腦對手機的衝動性在短短三天內就會急遽下降！</p>
+                    </div>
+                `;
+            } else {
+                primaryType = "感官社交屏蔽者 (Sensory Shield Sentinel)";
+                typeColorClass = "text-brand-lavender";
+                desc = `你的手機，其實是你戴在受傷靈魂上的一具<strong>「主動降噪防禦耳機」</strong>（非常典型且常見的 ASD 或是高敏感特質表現）。<br><br>
+                        現實生活中的光線、突如其來的噪音、混亂的情緒，以及高度消耗能量的「社交偽裝表演（Masking）」，都在無時無刻榨乾你的社交電池與感官容量。在手機螢幕前，你可以掌控與人互動的文字節奏、自由瀏覽你深愛而沉浸的利基主題。滑手機、重複滾動頁面是你在為疲憊的感官建構的安全防衛罩。`;
+                strategiesHtml = `
+                    <div class="flex gap-2 items-start">
+                        <i class="fa-solid fa-toolbox text-brand-lavender mt-1"></i>
+                        <p><strong>實體感官工具箱 (Sensory Fidgets)：</strong>準備抗噪耳塞、指尖陀螺、魔術方塊或減壓捏捏樂。當你在外界環境感到過載（Overloaded）時，試著使用這些工具。它們能提供大腦「自我刺激 (Stimming)」，分擔手機原本用來隔絕和穩定神經的功能。</p>
+                    </div>
+                    <div class="flex gap-2 items-start">
+                        <i class="fa-solid fa-battery-empty text-brand-lavender mt-1"></i>
+                        <p><strong>社交電力「合法關機宣告」：</strong>出門前評估自己的能量。允許自己「帶著手機合法離線」。你可以提前溫柔地和親近的朋友宣告：「我今天的感官電力稍微低一點，等等如果我滑手機、不說話，那是我在充電，但我能在這邊看著你們、跟你們聚在一起就很安心。」減少社交面具的自我消耗壓力。</p>
+                    </div>
+                `;
+            }
+
+            document.getElementById('result-type-title').textContent = primaryType;
+            // 套用特定色系
+            document.getElementById('result-type-title').className = `text-3xl font-black tracking-wide ${typeColorClass}`;
+
+            document.getElementById('result-description').innerHTML = desc;
+            document.getElementById('magic-strategies-content').innerHTML = strategiesHtml;
+        }
+
+        // 一鍵複製結果至剪貼簿
+        function copyToClipboard() {
+            const totalScore = document.getElementById('result-total-score').textContent;
+            const level = document.getElementById('result-level-text').textContent;
+            const type = document.getElementById('result-type-title').textContent;
+            const refuge = document.getElementById('score-refuge').textContent;
+            const hunter = document.getElementById('score-hunter').textContent;
+            const pod = document.getElementById('score-pod').textContent;
+
+            const text = `【手機使用特質檢測報告】\n\n我的依賴總分：${totalScore} / 90 分 (${level})\n我的手機使用特質：${type}\n\n【三大特質維度分數】\n- 現實避難所 (Reality Refuge)：${refuge}\n- 多巴胺獵人 (Dopamine Hunter)：${hunter}\n- 感官與社交換氣艙 (Sensory Pod)：${pod}\n\n#成人ADHD_ASD #以特質適應世界 #使用魔法適應魔法`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                alert('報告已複製到剪貼簿！歡迎貼回社群或存入筆記 🪄');
+            }).catch(err => {
+                console.error('複製失敗: ', err);
+                alert('抱歉，複製失敗，請手動複製結果。');
+            });
+        }
+    </script>
+</body>
+</html>
